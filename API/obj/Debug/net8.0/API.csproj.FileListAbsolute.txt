@@ -127,3 +127,17 @@ C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\runtimes\win
 C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\obj\Debug\net8.0\API.sourcelink.json
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\obj\Debug\net8.0\API.MvcApplicationPartsAssemblyInfo.cs
