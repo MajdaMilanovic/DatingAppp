@@ -15,7 +15,7 @@ export class AccountService {
 
   login(model:any)  //setting signal
   {
-    return this.http.post<User>(this.baseUrl + "account/login", model).pipe(
+    return this.http.post<User>(this.baseUrl + "Account/login", model).pipe(
       map(user => {
         if(user) {
           localStorage.setItem('user', JSON.stringify(user));
@@ -26,7 +26,7 @@ export class AccountService {
 
   register(model:any) 
   {
-    return this.http.post<User>(this.baseUrl + "account/register", model).pipe(
+    return this.http.post<User>(this.baseUrl + "Account/register", model).pipe(
       map(user => {
         if(user) {
           localStorage.setItem('user', JSON.stringify(user));
