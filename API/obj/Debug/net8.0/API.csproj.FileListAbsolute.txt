@@ -141,3 +141,4 @@ C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Swashbuckle.
 C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\obj\Debug\net8.0\API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\MajdaMilanovic\Desktop\demo\DatingApp\API\bin\Debug\net8.0\Data\UserSeedData.json
