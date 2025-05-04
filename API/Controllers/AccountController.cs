@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AccountController(DataContext context, ITokenService tokenService) : BaseApiController
+public class AccountController(DataContext context,
+                             ITokenService tokenService) : BaseApiController
 {
 [HttpPost("register")]
 public async Task<ActionResult<UserDto>> Register (RegisterDto registerDto)
