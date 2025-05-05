@@ -1,15 +1,14 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { Component, inject, OnInit, output } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
-import { ToastrService } from 'ngx-toastr';
-import { JsonPipe, NgIf } from '@angular/common';
 import { InputComponent } from '../_forms/text/input/input.component';
 import { DatePickerComponent } from "../_forms/date-picker/date-picker.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, InputComponent, DatePickerComponent],
+  imports: [ReactiveFormsModule, InputComponent, DatePickerComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -17,11 +16,11 @@ export class RegisterComponent implements OnInit{
 
   private accountService = inject(AccountService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   cancelRegister = output<boolean>();
-  model:any = {};
-  private toastr = inject(ToastrService);
   registerForm: FormGroup = new FormGroup({});
   maxDate = new Date();
+  validationErrors: string[] | undefined;
   
   ngOnInit(): void {
     this.initializeForm();
@@ -52,19 +51,23 @@ export class RegisterComponent implements OnInit{
   }
 
 register() {
+  const dob = this.getDateOnly(this.registerForm.get('dateOfBirth')?.value);
+  this.registerForm.patchValue({dateOfBirth: dob});
   console.log(this.registerForm.value);
-  // this.accountService.register(this.model).subscribe({
-  //   next:response => {
-  //     console.log(response);
-  //     this.cancel;
-  //   },
-  //   error: error => {
-  //    this.toastr.error(error.error)
-  //   }
-  // })
+  this.accountService.register(this.registerForm.value).subscribe({
+    next:_ => this.router.navigateByUrl('/members'),
+    error: error => {
+     this.validationErrors = error;
+    }
+  })
 }
 
 cancel() {
   this.cancelRegister.emit(false);
+}
+
+private getDateOnly(dob: string | undefined) {
+  if(!dob) return;
+  return new Date(dob).toISOString().slice(0, 10);
 }
 }
