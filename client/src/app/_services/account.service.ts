@@ -30,13 +30,17 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl + "Account/register", model).pipe(
       map(user => {
         if(user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUser.set(user);}
-          return user;
+          this.setCurrentUser(user);
+        }
       })
     )
   
   }
+
+  setCurrentUser(user : User) {
+    localStorage.setItem('user', JSON.stringify(user));
+          this.currentUser.set(user);}
+  
 
   logout() {
     localStorage.removeItem('user');
