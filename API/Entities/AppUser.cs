@@ -20,6 +20,7 @@ public required string Country { get; set; }
 public List<Photo> Photos { get; set; } = [];
 public List<UserLike> LikedByOtherUsers { get; set; } = [];
 public List<UserLike> LikedUsers { get; set; } = [];
-
+public List<Message> MessageSent { get; set; } = [];
+public List<Message> MessageRecieved { get; set; } = [];
 }
 
