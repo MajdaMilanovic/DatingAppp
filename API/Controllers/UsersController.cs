@@ -18,6 +18,7 @@ public class UsersController(IUserRepository userRepository,
 IMapper mapper, IPhotoService photoService) : BaseApiController
 {
 
+   
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>>GetUsers([FromQuery]UserParams userParams)
     {
@@ -26,6 +27,7 @@ IMapper mapper, IPhotoService photoService) : BaseApiController
         return Ok(users);
     }
 
+   
     [HttpGet("{username}")]  
     public async Task<ActionResult<MemberDto>>GetUser(string username)
     {

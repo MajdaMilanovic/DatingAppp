@@ -15,8 +15,9 @@ public class MessagesController(IMessageRepository messageRepository, IUserRepos
 {
     [HttpPost]
     
-    public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto)
+    public async Task<ActionResult<MessageDto>> CreateMessage([FromBody] CreateMessageDto createMessageDto)
     {
+        
         var username = User.GetUsername();
 
         if(username == createMessageDto.RecipientUsername.ToLower())
@@ -25,7 +26,7 @@ public class MessagesController(IMessageRepository messageRepository, IUserRepos
         var sender = await userRepository.GetUserByUsernameAsync(username);
         var recipient = await userRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
 
-        if(recipient == null || sender == null) return BadRequest("Cannot send message at this time");
+        if(recipient == null || sender == null || sender.UserName == null || recipient.UserName == null) return BadRequest("Cannot send message at this time");
 
         var message = new Message {
             Sender = sender,
