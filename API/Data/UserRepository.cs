@@ -12,12 +12,16 @@ namespace API.Data;
 public class UserRepository(DataContext context, IMapper mapper) : IUserRepository
 {
   
-    public async Task<MemberDto?> GetMemberAsync(string username)
+    public async Task<MemberDto?> GetMemberAsync(string username, bool isCurrentUser)
     {
-         return await context.Users
+         var query = context.Users
         .Where(x => x.UserName == username)
         .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
-        .SingleOrDefaultAsync();
+        .AsQueryable();
+
+         if(isCurrentUser) query = query.IgnoreQueryFilters();
+
+         return await query.FirstOrDefaultAsync();
     }
 
     public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
@@ -40,6 +44,8 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
             "created" => query.OrderByDescending(x => x.Created),
             _ => query.OrderByDescending(x => x.LastActive)
         };
+
+       
 
         return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider), userParams.PageNumber, userParams.PageSize);
         
