@@ -68,6 +68,12 @@ public class AdminConroller(UserManager<AppUser> userManager, IUnitOfWork unitOf
 
         photo.IsApproved = true;
 
+        var user = await unitOfWork.UserRepository.GetUserByPhotoId(photoId);
+
+        if(user == null) return BadRequest("Couldnt find user");
+
+        if(!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
+
         await unitOfWork.Complete();
 
         return Ok();
