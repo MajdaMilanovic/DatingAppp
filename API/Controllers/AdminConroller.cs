@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AdminConroller(UserManager<AppUser> userManager, IUnitOfWork unitOfWork,   IPhotoService photoService) : BaseApiController
+public class AdminConroller(UserManager<AppUser> userManager, IUnitOfWork unitOfWork,  IPhotoService photoService) : BaseApiController
 {
     [Authorize("RequireAdminRole")]
     [HttpGet("users-with-roles")]
@@ -68,11 +68,11 @@ public class AdminConroller(UserManager<AppUser> userManager, IUnitOfWork unitOf
 
         photo.IsApproved = true;
 
-        var user = await unitOfWork.UserRepository.GetUserByPhotoId(photoId);
+        // var user = await unitOfWork.UserRepository.GetUserByPhotoId(photoId);
 
-        if(user == null) return BadRequest("Couldnt find user");
+        // if(user == null) return BadRequest("Couldnt find user");
 
-        if(!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
+        // if(!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
 
         await unitOfWork.Complete();
 
@@ -98,8 +98,10 @@ public class AdminConroller(UserManager<AppUser> userManager, IUnitOfWork unitOf
         }
         else 
         {
-            await unitOfWork.Complete();
+            unitOfWork.PhotoRepository.RemovePhoto(photo);
         }
+
+            await unitOfWork.Complete();
 
         return Ok();
         

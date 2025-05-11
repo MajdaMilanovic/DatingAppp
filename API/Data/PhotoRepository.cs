@@ -22,7 +22,7 @@ public class PhotoRepository(DataContext context) : IPhotoRepository
         .Where(p => p.IsApproved == false)
         .Select(u => new PhotoForApprovalDto 
         {
-            PhotoId = u.Id,
+            Id = u.Id,
             Username = u.AppUser.UserName,
             Url = u.Url,
             IsApproved = u.IsApproved
