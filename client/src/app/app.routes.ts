@@ -23,7 +23,7 @@ export const routes: Routes = [
         children: [
             {path:'members', component: MemberListComponent},
             {path:'members/:username', component: MemberDetailsComponent, resolve: {member: memberDetailedResolver}},
-            {path: 'member/edit', component:MemberEditComponent,
+            {path:'member/edit', component:MemberEditComponent,
                  canDeactivate:[preventUnsavedChangesGuard]},
             {path:'lists', component:ListsComponent},
             {path:'messages', component:MessagesComponent},

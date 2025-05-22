@@ -54,12 +54,12 @@ export class MembersService {
     .find((m: Member) => m.username === username);
 
     if(member) return of(member);
-    return this.http.get<Member>(this.baseUrl + 'users/' + username);
+    return this.http.get<Member>(this.baseUrl + 'Users/' + username);
   }
 
   updateMember(member: Member)
   {
-    return this.http.put(this.baseUrl + 'users', member).pipe(
+    return this.http.put(this.baseUrl + 'Users/', member).pipe(
       // tap(() => {
       //   this.members.update(members => members.map(m => m.username === member.username ? member : m))
       // })
