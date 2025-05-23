@@ -1,16 +1,17 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { Member } from '../../_models/member';
 import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { FileUploader, FileUploadModule } from 'ng2-file-upload';
+import { FileItem, FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../_services/account.service';
 import { environment } from '../../../environments/environment';
 import { MembersService } from '../../_services/members.service';
 import { Photo } from '../../_models/photo';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-photo-editor',
   standalone: true,
-  imports: [NgIf, NgFor, NgStyle, NgClass, FileUploadModule, DecimalPipe],
+  imports: [NgIf, NgFor, NgStyle, NgClass, FileUploadModule, DecimalPipe, FormsModule],
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.css'
 })
@@ -22,6 +23,7 @@ export class PhotoEditorComponent implements OnInit{
   baseUrl = environment.apiUrl;
   memberChange = output<Member>();
   private memberService = inject(MembersService);
+  photoTags:string = '';
   
   ngOnInit(): void {
     this.initializeUploader();
@@ -94,6 +96,11 @@ export class PhotoEditorComponent implements OnInit{
         this.memberChange.emit(updatedMember);
       }
     }
+     this.uploader.onBuildItemForm = (item, form) => {
+        const tags = item.formData?.tags || '';
+        form.append('tags', tags);
+      }
+
   }
 
 }

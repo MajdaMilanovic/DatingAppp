@@ -15,10 +15,10 @@ namespace API.Controllers;
 
 [Authorize]
 public class UsersController(IUnitOfWork unitOfWork, 
-IMapper mapper, IPhotoService photoService) : BaseApiController
+IMapper mapper, IPhotoService photoService, ITagService tagService) : BaseApiController
 {
 
-   
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>>GetUsers([FromQuery]UserParams userParams)
     {
@@ -71,7 +71,13 @@ IMapper mapper, IPhotoService photoService) : BaseApiController
 
         if(await unitOfWork.Complete()) return CreatedAtAction(nameof(GetUser), new {username = user.UserName}, mapper.Map<PhotoDto>(photo));
 
-        return BadRequest("Problem adding photo");
+        // if (!string.IsNullOrWhiteSpace(photoDto.Tags))
+        // {
+        //     var tagList = photoDto.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+
+        //     await tagService.AddTagsToPhotoAsync(photo.Id, tagList);
+        // }
+            return BadRequest("Problem adding photo");
 
     }
 

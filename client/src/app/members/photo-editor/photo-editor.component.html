@@ -2,13 +2,15 @@
     @for (photo of member().photos; track photo.id) {
         <div class="col-2">
             <img src="{{photo.url}}" alt="photo of user" class="img-thumbnail mb-1">
+            <div class="text-center img-text" *ngFor="let tag of photoTags">
+                <span class="text-danger">{{tag}}</span>
+            </div>
             <div class="text-center">
                 <button class="btn btn-sm me-1"
                 [disabled]="photo.isMain  || !photo.isApproved"
                 (click)="setMainPhoto(photo)"
                 [ngClass]="photo.isMain ? 'btn-success active' : 'btn-outline-success'"
                 >Main</button>
-
                 <button class="btn btn-sm btn-danger"
                         [disabled]="photo.isMain"
                         (click)="deletePhoto(photo)">
@@ -16,7 +18,6 @@
             </div>
         </div>
     }
-
 </div>
 
 <div class="row">
@@ -33,8 +34,20 @@
              <i class="fa fa-upload fa-3x"></i>
             Drop photos here
         </div>
-    </div>
 
+        <div *ngFor="let item of uploader?.queue">
+            <div class="card p-2 my-2">
+                <label for="tags">Select photo tag</label>
+                <input type="text"
+                class="form-control"
+                id="tag"
+                name="tag"
+                [(ngModel)]="item.formData.tags"
+                placeholder="Selfie, friends, pet, food..."
+                >
+            </div>
+        </div>
+    </div>
     <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
 
         <h3>Upload queue</h3>
