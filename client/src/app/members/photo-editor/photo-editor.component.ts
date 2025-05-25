@@ -7,6 +7,14 @@ import { environment } from '../../../environments/environment';
 import { MembersService } from '../../_services/members.service';
 import { Photo } from '../../_models/photo';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+
+
+    interface Tag
+    {
+        id:number;
+        name:string;
+    }
 
 @Component({
   selector: 'app-photo-editor',
@@ -15,6 +23,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.css'
 })
+
+
 export class PhotoEditorComponent implements OnInit{
   private accountService = inject(AccountService);
   member = input.required<Member>();
@@ -23,10 +33,16 @@ export class PhotoEditorComponent implements OnInit{
   baseUrl = environment.apiUrl;
   memberChange = output<Member>();
   private memberService = inject(MembersService);
-  photoTags:string = '';
+  photoTags:Tag[] =[]; 
+  selectedTag:number | null =null;
+  selectedTagName:string='';
+  private http = inject(HttpClient);
+  imageId!:number;
+
   
   ngOnInit(): void {
     this.initializeUploader();
+    this.getTags();
   }
 
   fileOverBase(e:any) {
@@ -102,5 +118,40 @@ export class PhotoEditorComponent implements OnInit{
       }
 
   }
+
+
+    getTags() {
+    this.http.get<Tag[]>(this.baseUrl + 'Tags').subscribe((data) => {
+      this.photoTags = data;
+    })
+  }
+
+  connectTag() {
+    const selectedTag = this.photoTags.find(t =>t.id === this.selectedTag);
+
+    if(!selectedTag){
+      console.error("Tag missing");
+      return;
+    }
+
+    const body = {
+      tags: [selectedTag.id]
+    } 
+
+    this.http.post(this.baseUrl + `Tags/api/photos/${this.imageId}/tags`, body).subscribe({
+      next: () => {
+        console.log('Uspjesno povezano');
+      },
+      error:(err) => {
+        console.log("greska", err);
+      }
+    });
+  }
+
+  onChange() {
+    const tag = this.photoTags.find(t =>t.id === this.selectedTag);
+    this.selectedTagName = tag?.name || '';
+  }
+
 
 }

@@ -20,7 +20,7 @@ public class PhotoRepository(DataContext context) : IPhotoRepository
         return await context.Photos
         .IgnoreQueryFilters()
         .Where(p => p.IsApproved == false)
-        .Select(u => new PhotoForApprovalDto 
+        .Select(u => new PhotoForApprovalDto
         {
             Id = u.Id,
             Username = u.AppUser.UserName,
@@ -33,4 +33,5 @@ public class PhotoRepository(DataContext context) : IPhotoRepository
     {
         context.Photos.Remove(photo);
     }
+
 }

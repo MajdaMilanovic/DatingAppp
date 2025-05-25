@@ -13,6 +13,7 @@ ILikesRepository likesRepository, IPhotoRepository photoRepository, IMessageRepo
     public ILikesRepository LikesRepository => likesRepository;
 
     public IPhotoRepository PhotoRepository => photoRepository;
+    public ITagService TagService => TagService;
 
     public async Task<bool> Complete()
     {
