@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using System.Security.Cryptography.Xml;
+using System.Text.Json;
 using API.Controllers;
 using API.Data;
 using API.DTOs;
@@ -15,7 +17,7 @@ namespace API.Controllers;
 
 [Authorize]
 public class UsersController(IUnitOfWork unitOfWork, 
-IMapper mapper, IPhotoService photoService, ITagService tagService) : BaseApiController
+IMapper mapper, IPhotoService photoService, DataContext context) : BaseApiController
 {
 
 
@@ -54,7 +56,7 @@ IMapper mapper, IPhotoService photoService, ITagService tagService) : BaseApiCon
     } 
 
     [HttpPost("add-photo")]
-    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file, [FromForm] string? tagNames)
     {
         var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
         if(user == null) return BadRequest("Cannot update user");
@@ -71,14 +73,30 @@ IMapper mapper, IPhotoService photoService, ITagService tagService) : BaseApiCon
 
         if(await unitOfWork.Complete()) return CreatedAtAction(nameof(GetUser), new {username = user.UserName}, mapper.Map<PhotoDto>(photo));
 
-        // if (!string.IsNullOrWhiteSpace(photoDto.Tags))
-        // {
-        //     var tagList = photoDto.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+        if (!string.IsNullOrWhiteSpace(tagNames))
+        {
+            var tagList = JsonSerializer.Deserialize<List<string>>(tagNames);
+            foreach (var name in tagList!)
+            {
+                var tag = await context.Tags.FirstOrDefaultAsync(t => t.Name.ToLower() == name.ToLower());
+                if (tag == null)
+                {
+                    tag = new Tag { Name = name };
+                    context.Tags.Add(tag);
+                    await context.SaveChangesAsync();
+                }
+                context.PhotoTags.Add(new PhotoTag
+                {
+                    PhotoId = photo.Id,
+                    TagId = tag.Id
+                });
+            }
+            await context.SaveChangesAsync();
 
-        //     await tagService.AddTagsToPhotoAsync(photo.Id, tagList);
-        // }
+            return Ok(new { photo.Id });
+        }
+
             return BadRequest("Problem adding photo");
-
     }
 
     [HttpPut("set-main-photo/{photoId:int}")]

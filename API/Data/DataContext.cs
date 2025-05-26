@@ -47,7 +47,7 @@ public class DataContext(DbContextOptions options) : IdentityDbContext<AppUser, 
                .HasOne(s => s.TargetUser)
                .WithMany(l => l.LikedByOtherUsers)
                .HasForeignKey(s => s.TargetUserId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
 
                 builder.Entity<Message>()

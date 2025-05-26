@@ -2,8 +2,8 @@
     @for (photo of member().photos; track photo.id) {
         <div class="col-2">
             <img src="{{photo.url}}" alt="photo of user" class="img-thumbnail mb-1">
-            <div class="text-center img-text" *ngFor="let tag of photoTags">
-                <span class="text-danger">{{tag}}</span>
+            <div class="tag-overlay" *ngIf="photo.tags?.length">
+                <span class="tag" *ngFor="let tag of photo.tags">{{tag.name}}</span>
             </div>
             <div class="text-center">
                 <button class="btn btn-sm me-1"
@@ -15,6 +15,11 @@
                         [disabled]="photo.isMain"
                         (click)="deletePhoto(photo)">
                         <i class="fa fa-trash"></i></button>
+                <button class="btn btn-sm me-1" >Choose tag for your photo</button>
+                 <select multiple [(ngModel)]="selectedTags" >
+            <option *ngFor="let tag of photoTags" [value]="tag.id">{{tag.name}}</option>
+        </select>
+        <button class="btn btn-sm" (click)="connectTag(this.selectedTags, photo.id)">Connect tag</button>
             </div>
         </div>
     }
@@ -34,26 +39,6 @@
              <i class="fa fa-upload fa-3x"></i>
             Drop photos here
         </div>
-
-        <select [(ngModel)]="selectedTag" (change)="onChange()">
-            <option value="" disabled selected>Select a tag for your photo</option>
-            <option *ngFor="let tag of photoTags" [value]="tag.id">{{tag.name}}</option>
-        </select>
-
-        <button (click)="connectTag()" [disabled]="!selectedTag">Choose tag</button>
-
-        <!-- <div *ngFor="let item of uploader?.queue">
-            <div class="card p-2 my-2">
-                <label for="tags">Select photo tag</label>
-                <input type="text"
-                class="form-control"
-                id="tag"
-                name="tag"
-                [(ngModel)]="item.formData.tags"
-                placeholder="Selfie, friends, pet, food..."
-                >
-            </div>
-        </div> -->
     </div>
     <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
 

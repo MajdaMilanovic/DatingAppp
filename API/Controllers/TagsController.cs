@@ -50,11 +50,11 @@ namespace API.Controllers
         }
 
         [HttpPost("api/photos/{photoId}/tags")]
-        public async Task<IActionResult> AddTagsToPhoto(int photoId, [FromBody] List<string> tags)
+        public async Task<IActionResult> AddTagsToPhoto(int photoId, [FromBody] List<int> tagIds)
         {
             try
             {
-                await _tagService.AddTagsToPhotoAsync(photoId, tags);
+                await _tagService.AddTagsToPhotoAsync(photoId, tagIds);
                 return Ok();
             }
             catch (KeyNotFoundException ex)

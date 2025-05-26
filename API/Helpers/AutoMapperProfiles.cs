@@ -24,8 +24,8 @@ public class AutoMapperProfiles : Profile
         o => o.MapFrom(s => s.Recipient.Photos.FirstOrDefault(x => x.IsMain)!.Url));
         CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
-        CreateMap<Tag, TagDto>().ReverseMap();
-        CreateMap<Photo, PhotoWithTagsDto>()
-        .ForMember(d => d.Tags, o => o.MapFrom(s => s.PhotoTags.Select(pt => pt.Tag)));
+        CreateMap<Tag, TagDto>();
+        CreateMap<Photo, PhotoDto>()
+        .ForMember(d => d.Tags, o => o.MapFrom(s => s.PhotoTags.Select(pt => pt.Tag).ToList()));
     }
 }

@@ -33,5 +33,17 @@ public class PhotoRepository(DataContext context) : IPhotoRepository
     {
         context.Photos.Remove(photo);
     }
+    public async Task<AppUser?> GetUserByPhotoId(int photoId)
+    {
+        return await context.Users
+        .Include(p => p.Photos)
+        .IgnoreQueryFilters()
+        .Where(p => p.Photos.Any(p => p.Id == photoId))
+        .FirstOrDefaultAsync();
+    }
 
+    public async void SaveChangesAsync()
+    {
+        await context.SaveChangesAsync();
+    }
 }

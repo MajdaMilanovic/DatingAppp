@@ -5,16 +5,11 @@ import { FileItem, FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../_services/account.service';
 import { environment } from '../../../environments/environment';
 import { MembersService } from '../../_services/members.service';
-import { Photo } from '../../_models/photo';
+import { Photo, Tag } from '../../_models/photo';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
-
-    interface Tag
-    {
-        id:number;
-        name:string;
-    }
 
 @Component({
   selector: 'app-photo-editor',
@@ -26,19 +21,22 @@ import { HttpClient } from '@angular/common/http';
 
 
 export class PhotoEditorComponent implements OnInit{
-  private accountService = inject(AccountService);
+ 
+  constructor( private accountService: AccountService,
+               private memberService: MembersService,
+               private http: HttpClient,
+               private toastr: ToastrService) {
+  }
   member = input.required<Member>();
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
   memberChange = output<Member>();
-  private memberService = inject(MembersService);
   photoTags:Tag[] =[]; 
-  selectedTag:number | null =null;
+  selectedTags:number[]=[];
   selectedTagName:string='';
-  private http = inject(HttpClient);
   imageId!:number;
-
+  lastUploadedPhotoId:number | null = null;
   
   ngOnInit(): void {
     this.initializeUploader();
@@ -95,6 +93,10 @@ export class PhotoEditorComponent implements OnInit{
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       const photo = JSON.parse(response);
+      console.log('Uploaded photo', photo);
+      this.lastUploadedPhotoId = photo.id;
+      console.log('stored photo:', this.lastUploadedPhotoId);
+      this.imageId = photo.id;
       const updatedMember = {...this.member()}
       updatedMember.photos.push(photo);
       this.memberChange.emit(updatedMember);
@@ -112,10 +114,6 @@ export class PhotoEditorComponent implements OnInit{
         this.memberChange.emit(updatedMember);
       }
     }
-     this.uploader.onBuildItemForm = (item, form) => {
-        const tags = item.formData?.tags || '';
-        form.append('tags', tags);
-      }
 
   }
 
@@ -126,32 +124,28 @@ export class PhotoEditorComponent implements OnInit{
     })
   }
 
-  connectTag() {
-    const selectedTag = this.photoTags.find(t =>t.id === this.selectedTag);
+  connectTag(tagId: number[], id:number) {
+    const photoId = id;
+    const payload = {tagId, photoId};
+    console.log('Sending to backend:', payload);
 
-    if(!selectedTag){
-      console.error("Tag missing");
+    if(!this.selectedTags.length){
+      console.log("tag");
       return;
     }
-
-    const body = {
-      tags: [selectedTag.id]
-    } 
-
-    this.http.post(this.baseUrl + `Tags/api/photos/${this.imageId}/tags`, body).subscribe({
+     else if( !id){
+      console.log("slika");
+      return;
+    }
+   
+    this.http.post(this.baseUrl + `Tags/api/photos/${id}/tags`, tagId).subscribe({
       next: () => {
-        console.log('Uspjesno povezano');
+        this.toastr.success("Tag connected successfully!");
       },
       error:(err) => {
-        console.log("greska", err);
+        this.toastr.error("Administrator should approve first!");
       }
     });
   }
-
-  onChange() {
-    const tag = this.photoTags.find(t =>t.id === this.selectedTag);
-    this.selectedTagName = tag?.name || '';
-  }
-
 
 }

@@ -12,6 +12,6 @@ namespace API.Interfaces
         Task<IEnumerable<TagDto>> GetAllTagsAsync();
         Task<TagDto> CreateTagAsync(CreateTagDto dto);
         Task<bool> DeleteTagAsync(int id);
-        Task AddTagsToPhotoAsync(int photoId, List<string> tagNames);
+        Task AddTagsToPhotoAsync(int photoId, List<int> tagIds);
     }
 }

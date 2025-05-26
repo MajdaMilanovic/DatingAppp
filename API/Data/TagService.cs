@@ -12,22 +12,20 @@ namespace API.Data
     public class TagService(DataContext context) : ITagService
     {
 
-        public async Task AddTagsToPhotoAsync(int photoId, List<string> tagNames)
+        public async Task AddTagsToPhotoAsync(int photoId, List<int> tagIds)
         {
             var photo = await context.Photos.Include(p => p.PhotoTags).FirstOrDefaultAsync(p => p.Id == photoId);
 
             if (photo == null)
                 throw new KeyNotFoundException("Photo not found");
 
-            foreach (var name in tagNames)
+            foreach (var tagId in tagIds)
             {
-                var tag = await context.Tags.FirstOrDefaultAsync(t => t.Name.ToLower() == name.ToLower());
+                var tag = await context.Tags.FindAsync(tagId);
 
                 if (tag == null)
                 {
-                    tag = new Tag { Name = name };
-                    context.Tags.Add(tag);
-                    await context.SaveChangesAsync();
+                    continue;
                 }
                 if (!photo.PhotoTags.Any(p => p.TagId == tag.Id))
                 {
