@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -13,54 +14,30 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class TagsController : ControllerBase
     {
-        private readonly ITagService _tagService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly Mapper _mapper;
 
-        public TagsController(ITagService tagService)
+        public TagsController(IUnitOfWork unitOfWork, Mapper mapper)
         {
-            _tagService = tagService;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var tags = await _tagService.GetAllTagsAsync();
+            var tags = await _unitOfWork.TagRepository.GetAllTagsAsync();
             return Ok(tags);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateTag([FromBody] CreateTagDto dto)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TagDto>> GetTagById(int id)
         {
-            try
-            {
-                var tag = await _tagService.CreateTagAsync(dto);
-                return CreatedAtAction(nameof(GetAll), new { id = tag.Id }, tag);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+            var tag = await _unitOfWork.TagRepository.GetTagByIdAsync(id);
+            if (tag == null) return NotFound();
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var success = await _tagService.DeleteTagAsync(id);
-            if (!success) return NotFound();
-            return NoContent();
+            return Ok(_mapper.Map<TagDto>(tag));
         }
-
-        [HttpPost("api/photos/{photoId}/tags")]
-        public async Task<IActionResult> AddTagsToPhoto(int photoId, [FromBody] List<int> tagIds)
-        {
-            try
-            {
-                await _tagService.AddTagsToPhotoAsync(photoId, tagIds);
-                return Ok();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-        }
+    
     }
 }

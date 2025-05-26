@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../_models/user';
 import { Photo } from '../_models/photo';
+import { Tag } from '../_models/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,24 @@ export class AdminService {
   }
   rejectPhoto(photoId: number) {
     return this.http.post(this.baseUrl + 'AdminConroller/rejectPhoto/' + photoId, {});
+  }
+
+  getPhotosByTags(tags: string[]) {
+    const params = new HttpParams({ fromObject: { tags } });
+    return this.http.get<Photo[]>(this.baseUrl + 'photos/unapproved-by-tags', {
+      params,
+    });
+  }
+
+  getAllTags() {
+    return this.http.get<Tag[]>(this.baseUrl + 'AdminConroller/tags');
+  }
+
+  addTag(tag: { name: string }) {
+    return this.http.post<Tag>(this.baseUrl + 'AdminConroller/add-tag', tag);
+  }
+
+  deleteTag(tagId: number) {
+    return this.http.delete(this.baseUrl + 'AdminConroller/delete-tag/' + tagId);
   }
 }

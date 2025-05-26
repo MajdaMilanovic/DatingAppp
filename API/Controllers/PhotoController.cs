@@ -1,36 +1,55 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Threading.Tasks;
-// using API.Data;
-// using API.Entities;
-// using API.Extensions;
-// using API.Services;
-// using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API.Data;
+using API.DTOs;
+using API.Entities;
+using API.Extensions;
+using API.Services;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-// namespace API.Controllers
-// {
-//     public class PhotoController(UnitOfWork unitOfWork, PhotoService photoService) : BaseApiController
-//     {
-//         [HttpPost]
-//         [Route("api/photos")]
-//         public async Task<IActionResult> UploadPhoto([FromForm] IFormFile file, [FromForm] string? tagNames)
-//         {
-//             if (file == null || file.Length == 0)
-//             {
-//                 return BadRequest("No file uploaded");
-//             }
-//             var result = await photoService.AddPhotoAsync(file);
-//             if (result.Error != null) return BadRequest(result.Error.Message);
+namespace API.Controllers
+{
+    [Authorize]
+    public class PhotoController(UnitOfWork unitOfWork, IMapper mapper) : BaseApiController
+    {
+        [HttpGet("filter-by-tags")]
 
-//             var photo = new Photo
-//             {
-//                 Url = result.SecureUrl.AbsoluteUri,
-//                 PublicId = result.PublicId
-//             };
+        public async Task<ActionResult<IEnumerable<PhotoWithTagsDto>>> GetPhotosByTags([FromQuery] List<string> tags)
+        {
+
+            if (tags == null || !tags.Any())
+                return BadRequest("At least one tag is required.");
+
+            var photos = await unitOfWork.PhotoRepository.GetPhotosByTagsAsync(tags);
+            return Ok(mapper.Map<IEnumerable<PhotoWithTagsDto>>(photos));
+
+        }
+
+        [Authorize(Policy = "ModeratePhotoRole")]
+
+        [HttpGet("unapproved-by-tags")]
+
+        public async Task<ActionResult<IEnumerable<PhotoWithTagsDto>>> GetUnapprovedPhotosByTags([FromQuery] List<string> tags)
+
+        {
+
+            if (tags == null || !tags.Any())
+
+                return BadRequest("At least one tag is required.");
+
+
+
+            var photos = await unitOfWork.PhotoRepository.GetUnapprovedPhotosByTagsAsync(tags);
+
+
+
+            return Ok(mapper.Map<IEnumerable<PhotoWithTagsDto>>(photos));
+        }
 
         
-
-//         }
-//     }
-// }
+    }
+}

@@ -4,7 +4,7 @@ using API.Interfaces;
 namespace API.Data;
 
 public class UnitOfWork(DataContext context, IUserRepository userRepository, 
-ILikesRepository likesRepository, IPhotoRepository photoRepository, IMessageRepository messageRepository) : IUnitOfWork
+ILikesRepository likesRepository, IPhotoRepository photoRepository, IMessageRepository messageRepository, ITagRepository tagRepository) : IUnitOfWork
 {
     public IUserRepository UserRepository => userRepository;
 
@@ -13,7 +13,7 @@ ILikesRepository likesRepository, IPhotoRepository photoRepository, IMessageRepo
     public ILikesRepository LikesRepository => likesRepository;
 
     public IPhotoRepository PhotoRepository => photoRepository;
-    public ITagService TagService => TagService;
+    public ITagRepository TagRepository => tagRepository;
 
     public async Task<bool> Complete()
     {

@@ -19,7 +19,7 @@ public static class ApplicationServiceExtensions
 
         services.AddDbContext<DataContext>(opt =>
         {
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         });
 
         services.AddCors();
@@ -31,7 +31,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPhotoRepository, PhotoRepository>();
         services.AddScoped<LogUserActivity>();
-        services.AddScoped<ITagService, TagService>();
+        services.AddScoped<ITagRepository, TagRepository>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
         services.AddSignalR();

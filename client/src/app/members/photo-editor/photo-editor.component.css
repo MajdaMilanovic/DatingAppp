@@ -22,3 +22,61 @@
  padding: 0 10px;
  box-sizing: border-box;
 }
+
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+button.btn {
+  background-color: #c8abbb;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+button.btn:hover {
+  background-color: #ec4899;
+}
+
+
+select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #fff0f6;
+  color: #333;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+select:focus {
+  outline: none;
+  border-color: #f472b6;
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.3);
+}
+
+.custom-select{
+    width: 300px;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.custom-select option {
+    padding: 8px;
+}
+

@@ -59,7 +59,7 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
     public async Task<AppUser?> GetUserByPhotoId(int photoId)
     {
         return await context.Users
-        .Include(p => p.Photos).ThenInclude(p=>p.PhotoTags)
+        .Include(p => p.Photos)
         .IgnoreQueryFilters()
         .Where(p => p.Photos.Any(p => p.Id == photoId))
         .FirstOrDefaultAsync();
@@ -74,7 +74,7 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
         return await context.Users
-        .Include(x=>x.Photos).ThenInclude(p=>p.PhotoTags)
+        .Include(x=>x.Photos)
         .ToListAsync();
     }
 

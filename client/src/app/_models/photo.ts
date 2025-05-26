@@ -4,11 +4,5 @@ export interface Photo {
     isMain: boolean
     isApproved: boolean
     username?: string
-    tags:Tag[];
+    tags?:{id:number; name:string}[];
 }
-
-export interface Tag
-    {
-        id:number;
-        name:string;
-    }

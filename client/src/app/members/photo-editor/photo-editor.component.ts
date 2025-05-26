@@ -5,16 +5,18 @@ import { FileItem, FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../_services/account.service';
 import { environment } from '../../../environments/environment';
 import { MembersService } from '../../_services/members.service';
-import { Photo, Tag } from '../../_models/photo';
+import { Photo } from '../../_models/photo';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 
 
 @Component({
   selector: 'app-photo-editor',
   standalone: true,
-  imports: [NgIf, NgFor, NgStyle, NgClass, FileUploadModule, DecimalPipe, FormsModule],
+  imports: [NgIf, NgFor, NgStyle, NgClass, FileUploadModule, DecimalPipe, FormsModule, BsDropdownModule],
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.css'
 })
@@ -32,15 +34,14 @@ export class PhotoEditorComponent implements OnInit{
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
   memberChange = output<Member>();
-  photoTags:Tag[] =[]; 
-  selectedTags:number[]=[];
-  selectedTagName:string='';
-  imageId!:number;
-  lastUploadedPhotoId:number | null = null;
+  tagInput = '';
+  tagFilter = '';
+  filteredPhotos: Photo[] = [];
+
   
   ngOnInit(): void {
     this.initializeUploader();
-    this.getTags();
+   this.filteredPhotos = this.member().photos;
   }
 
   fileOverBase(e:any) {
@@ -57,7 +58,7 @@ export class PhotoEditorComponent implements OnInit{
     })
   }
 
-  setMainPhoto(photo: Photo) {
+  setPhotoAsMain(photo: Photo) {
     this.memberService.setMainPhoto(photo).subscribe({
       next: _ => {
         const user = this.accountService.currentUser();
@@ -78,7 +79,7 @@ export class PhotoEditorComponent implements OnInit{
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + 'Users/add-photo',
+      url: this.baseUrl + 'Users/add-photo-with-tags',
       authToken: 'Bearer ' + this.accountService.currentUser()?.token,
       isHTML5: true,
       allowedFileType: ['image'],
@@ -90,13 +91,20 @@ export class PhotoEditorComponent implements OnInit{
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false
     }
+    this.uploader.onBeforeUploadItem = (item) => {
+      if (this.tagInput.trim() !== '') {
+        const tagList = this.tagInput
+          .split(',')
+          .map((tag) => `tags=${encodeURIComponent(tag.trim())}`)
+          .join('&');
+        item.url = this.baseUrl + 'Users/add-photo-with-tags?' + tagList;
+      } else {
+        item.url = this.baseUrl + 'Users/add-photo-with-tags';
+      }
+    };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       const photo = JSON.parse(response);
-      console.log('Uploaded photo', photo);
-      this.lastUploadedPhotoId = photo.id;
-      console.log('stored photo:', this.lastUploadedPhotoId);
-      this.imageId = photo.id;
       const updatedMember = {...this.member()}
       updatedMember.photos.push(photo);
       this.memberChange.emit(updatedMember);
@@ -112,40 +120,67 @@ export class PhotoEditorComponent implements OnInit{
           if(p.id === photo.id) p.isMain = true;
         });
         this.memberChange.emit(updatedMember);
+        this.filteredPhotos = updatedMember.photos;
       }
-    }
+    };
 
   }
 
+  filterPhotos() {
+    const tags = this.tagFilter
+      .split(',')
+      .map((t) => t.trim().toLowerCase())
+      .filter((t) => t.length > 0);
 
-    getTags() {
-    this.http.get<Tag[]>(this.baseUrl + 'Tags').subscribe((data) => {
-      this.photoTags = data;
-    })
+    if (!tags.length) {
+
+      this.filteredPhotos = this.member().photos;
+      return;
+    }
+
+    this.filteredPhotos = this.member().photos.filter((photo) =>
+      photo.tags?.some((tag) => tags.includes(tag.name.toLowerCase()))
+    );
   }
 
-  connectTag(tagId: number[], id:number) {
-    const photoId = id;
-    const payload = {tagId, photoId};
-    console.log('Sending to backend:', payload);
+   clearFilter() {
+    this.tagFilter = '';
 
-    if(!this.selectedTags.length){
-      console.log("tag");
-      return;
-    }
-     else if( !id){
-      console.log("slika");
-      return;
-    }
-   
-    this.http.post(this.baseUrl + `Tags/api/photos/${id}/tags`, tagId).subscribe({
-      next: () => {
-        this.toastr.success("Tag connected successfully!");
-      },
-      error:(err) => {
-        this.toastr.error("Administrator should approve first!");
-      }
-    });
+    this.filteredPhotos = this.member().photos;
+  }
+
+  filterPhotosByTag(tagName: string) {
+
+    this.tagFilter = tagName;
+    this.filterPhotos();
+
   }
 
 }
+
+
+    // connectTag(tagId: number[], id:number) {
+    //   const photoId = id;
+    //   const payload = {tagId, photoId};
+    //   console.log('Sending to backend:', payload);
+
+    //   if(!this.selectedTags.length){
+    //     console.log("tag");
+    //     return;
+    //   }
+    //   else if( !id){
+    //     console.log("slika");
+    //     return;
+    //   }
+    
+    //   this.http.post(this.baseUrl + `Tags/api/photos/${id}/tags`, tagId).subscribe({
+    //     next: () => {
+    //       this.toastr.success("Tag connected successfully!");
+    //     },
+    //     error:(err) => {
+    //       this.toastr.error("Administrator should approve first!");
+    //     }
+    //   });
+    // }
+
+
