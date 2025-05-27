@@ -18,5 +18,13 @@
                 <app-tag-management></app-tag-management>
             </div>
         </tab>
+
+        <tab heading="Statistics" *appHasRole="['Admin','Moderator']">
+            <div class="container">
+
+               <app-statistics></app-statistics>
+
+            </div>
+        </tab>
     </tabset>
 </div>

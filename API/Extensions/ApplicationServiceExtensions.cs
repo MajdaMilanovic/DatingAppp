@@ -32,6 +32,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IPhotoRepository, PhotoRepository>();
         services.AddScoped<LogUserActivity>();
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IAdminRepository, AdminRepository>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
         services.AddSignalR();

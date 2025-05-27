@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using API.Data;
 using API.DTOs;
@@ -16,10 +17,13 @@ namespace API.Controllers;
 
 public class AdminConroller(UserManager<AppUser> userManager,
  IUnitOfWork unitOfWork,
- IPhotoService photoService, IMapper mapper,
- IConfiguration configuration) : BaseApiController
+ IPhotoService photoService,
+ IConfiguration configuration,
+ IMapper mapper,
+ DataContext context) : BaseApiController
 {
     private readonly IConfiguration configuration = configuration;
+    private readonly DataContext _context = context;
 
     [Authorize("RequireAdminRole")]
     [HttpGet("users-with-roles")]
@@ -80,9 +84,9 @@ public class AdminConroller(UserManager<AppUser> userManager,
 
         var user = await unitOfWork.UserRepository.GetUserByPhotoId(photoId);
 
-        if(user == null) return BadRequest("Couldnt find user");
+        if (user == null) return BadRequest("Couldnt find user");
 
-        if(!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
+        if (!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
 
         await unitOfWork.Complete();
 
@@ -175,6 +179,40 @@ public class AdminConroller(UserManager<AppUser> userManager,
         return NoContent();
 
     }
+    
+        [HttpGet("photo-stats")]
+        public async Task<IActionResult> GetPhotoStats()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            
+            if (string.IsNullOrEmpty(userId))
+            return Unauthorized("User not authenticated");
+
+            
+            var username = User.Identity?.Name;
+
+             if (string.IsNullOrEmpty(username))
+            return Unauthorized("User not authenticated");
+
+        var stats = await _context.GetPhotoApprovalStatsAsync(userId);
+        return Ok(stats);
+        }
+
+        [HttpGet("users-without-main-photo")]
+        public async Task<IActionResult> GetUsersWithoutMainPhoto()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            
+            if (string.IsNullOrEmpty(userId))
+            return Unauthorized("User not authenticated");
+            var username = User.Identity?.Name;
+
+             if (string.IsNullOrEmpty(username))    
+              return Unauthorized("User not authenticated");
+         var users = await _context.GetUsersWithoutMainPhotoAsync(userId);
+            return Ok(users);
+        }
+
+    }
 
 
-}

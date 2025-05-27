@@ -17,10 +17,12 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers;
 
 [Authorize]
-public class UsersController(IUnitOfWork unitOfWork, 
-IMapper mapper, IPhotoService photoService, DataContext context) : BaseApiController
+public class UsersController(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    IPhotoService photoService,
+    DataContext context) : BaseApiController
 {
-
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>>GetUsers([FromQuery]UserParams userParams)

@@ -4,11 +4,12 @@ import { UserManagementComponent } from "../user-management/user-management.comp
 import { HasRoleDirective } from '../../_directives/has-role.directive';
 import { PhotoManagementComponent } from "../photo-management/photo-management.component";
 import { TagManagementComponent } from "../tag-management/tag-management.component";
+import { StatisticsComponent } from '../statistics/statistics.component';
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [TabsModule, UserManagementComponent, HasRoleDirective, PhotoManagementComponent, TagManagementComponent],
+  imports: [TabsModule, UserManagementComponent, HasRoleDirective, PhotoManagementComponent, TagManagementComponent, StatisticsComponent],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css'
 })
