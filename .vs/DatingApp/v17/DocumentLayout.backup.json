@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{689CCBF8-A299-4FAF-A33B-C36B52C50A2D}|UsersControllerTests\\UsersControllerTests.csproj|c:\\users\\majdamilanovic\\desktop\\demo\\datingapp\\userscontrollertests\\usercontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{689CCBF8-A299-4FAF-A33B-C36B52C50A2D}|UsersControllerTests\\UsersControllerTests.csproj|solutionrelative:userscontrollertests\\usercontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A344CEA-FB92-4DC8-B1A7-DEF53DEE4F40}|AdminTests\\AdminTests.csproj|c:\\users\\majdamilanovic\\desktop\\demo\\datingapp\\admintests\\admincontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A344CEA-FB92-4DC8-B1A7-DEF53DEE4F40}|AdminTests\\AdminTests.csproj|solutionrelative:admintests\\admincontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C66D940E-BAFB-4B93-BBBA-B472E32A836B}|API\\API.csproj|c:\\users\\majdamilanovic\\desktop\\demo\\datingapp\\api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C66D940E-BAFB-4B93-BBBA-B472E32A836B}|API\\API.csproj|solutionrelative:api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C66D940E-BAFB-4B93-BBBA-B472E32A836B}|API\\API.csproj|c:\\users\\majdamilanovic\\desktop\\demo\\datingapp\\api\\controllers\\adminconroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C66D940E-BAFB-4B93-BBBA-B472E32A836B}|API\\API.csproj|solutionrelative:api\\controllers\\adminconroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\API\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\API\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "API\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAMwBcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:23:47.501Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\UsersControllerTests\\UserControllerTests.cs",
+              "RelativeDocumentMoniker": "UsersControllerTests\\UserControllerTests.cs",
+              "ToolTip": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\UsersControllerTests\\UserControllerTests.cs",
+              "RelativeToolTip": "UsersControllerTests\\UserControllerTests.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAlwGEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:00:59.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AdminConroller.cs",
+              "DocumentMoniker": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\API\\Controllers\\AdminConroller.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\AdminConroller.cs",
+              "ToolTip": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\API\\Controllers\\AdminConroller.cs",
+              "RelativeToolTip": "API\\Controllers\\AdminConroller.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T10:42:40.075Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdminControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\AdminTests\\AdminControllerTests.cs",
+              "RelativeDocumentMoniker": "AdminTests\\AdminControllerTests.cs",
+              "ToolTip": "C:\\Users\\MajdaMilanovic\\Desktop\\demo\\DatingApp\\AdminTests\\AdminControllerTests.cs",
+              "RelativeToolTip": "AdminTests\\AdminControllerTests.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAqwDUAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T09:17:11.757Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

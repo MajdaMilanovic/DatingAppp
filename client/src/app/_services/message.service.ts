@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PaginatedResult } from '../_models/pagination';
 import { Message } from '../_models/message';
@@ -12,13 +12,13 @@ import { Group } from '../_models/group';
   providedIn: 'root'
 })
 export class MessageService {
-
  baseUrl = environment.apiUrl;
  hubUrl = environment.hubsUrl;
  hubConnection?: HubConnection;
- private http = inject(HttpClient);
  paginatedResult = signal<PaginatedResult<Message[]> | null>(null);
  messageThread = signal<Message[]>([]);
+
+ constructor(private http:HttpClient) {}
 
  createHubConnection(user: User, otherUsername: string) {
   this.hubConnection = new HubConnectionBuilder()

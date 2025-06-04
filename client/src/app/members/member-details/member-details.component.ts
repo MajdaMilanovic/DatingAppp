@@ -3,9 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Member } from '../../_models/member';
 import { TabDirective, TabsetComponent, TabsModule } from 'ngx-bootstrap/tabs';  
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
-import { TimeagoModule, TimeagoPipe } from 'ngx-timeago';
+import { TimeagoModule } from 'ngx-timeago';
 import { MemberMessagesComponent } from "../member-messages/member-messages.component";
-import { Message } from '../../_models/message';
 import { MessageService } from '../../_services/message.service';
 import { PresenceService } from '../../_services/presence.service';
 import { AccountService } from '../../_services/account.service';
@@ -21,15 +20,12 @@ import { HubConnectionState } from '@microsoft/signalr';
 export class MemberDetailsComponent implements OnInit, OnDestroy {
   
   @ViewChild('memberTabs', {static: true}) memberTabs?: TabsetComponent;
-  private messageService = inject(MessageService);
-  private accountService = inject(AccountService);
   presenceService = inject(PresenceService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   member: Member = {} as Member;
   images: GalleryItem[] = [];
   activeTab?: TabDirective;
 
+  constructor(private messageService:MessageService, private accountService:AccountService,  private route:ActivatedRoute, private router:Router) {}
   ngOnInit() {
     this.route.data.subscribe({
       next: data => {

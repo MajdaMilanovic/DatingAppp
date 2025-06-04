@@ -12,26 +12,22 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './photo-management.component.css'
 })
 export class PhotoManagementComponent implements OnInit {
+  photos: Photo[] = [];
+  tagFilter = '';
+
+  constructor(private adminService:AdminService, private toastr:ToastrService) {}
+  
   ngOnInit(): void {
    this.getPhotosForApproval();
   }
-  photos: Photo[] = [];
-  adminService = inject(AdminService);
-  private toastr = inject(ToastrService);
-  tagFilter = '';
 
   loadPhotosByTags() {
     const tagList = this.tagFilter
-
       .split(',')
-
       .map((tag) => tag.trim())
-
       .filter((tag) => tag.length > 0);
-
     if (tagList.length === 0) {
       this.getPhotosForApproval();
-
       return;
     }
 
@@ -42,7 +38,6 @@ export class PhotoManagementComponent implements OnInit {
 
       error: (err) => {
         console.log(err);
-
         this.toastr.error("Couldn't filter photos by tags");
       },
     });

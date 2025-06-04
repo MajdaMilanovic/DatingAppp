@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { InputComponent } from '../_forms/text/input/input.component';
@@ -13,14 +13,14 @@ import { Router } from '@angular/router';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit{
-
-  private accountService = inject(AccountService);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
   cancelRegister = output<boolean>();
   registerForm: FormGroup = new FormGroup({});
   maxDate = new Date();
   validationErrors: string[] | undefined;
+
+  constructor(private accountService:AccountService,
+                private fb:FormBuilder,
+                private router:Router) {}
   
   ngOnInit(): void {
     this.initializeForm();

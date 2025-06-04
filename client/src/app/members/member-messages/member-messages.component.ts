@@ -18,6 +18,8 @@ export class MemberMessagesComponent  implements AfterViewChecked {
   username = input.required<string>();
   messsageContent ='';
 
+  constructor() {}
+
   sendMessage() {
     this.messageService.sendMessage(this.username(), this.messsageContent).then(() => {
       this.messageForm?.reset();

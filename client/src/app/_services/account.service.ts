@@ -1,5 +1,5 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { computed, Injectable, signal } from '@angular/core';
 import { User } from '../_models/user';
 import { map } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -10,13 +10,8 @@ import { PresenceService } from './presence.service';
   providedIn: 'root'
 })
 export class AccountService {
-
-  private http = inject(HttpClient);
-  private likeService = inject(LikesService);
-  private presenceService = inject(PresenceService);
   baseUrl = environment.apiUrl;
   currentUser = signal<User | null>(null);
-
   roles = computed(() => {
     const user = this.currentUser();
     if(user && user.token) {
@@ -26,6 +21,10 @@ export class AccountService {
     return null;
   })
 
+  constructor( private http:HttpClient,
+               private likeService:LikesService,
+              private presenceService:PresenceService) {}
+  
   login(model:any) 
   {
     return this.http.post<User>(this.baseUrl + "Account/login", model).pipe(

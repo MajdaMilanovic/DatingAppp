@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../_models/user';
@@ -6,15 +6,14 @@ import { Photo } from '../_models/photo';
 import { Tag } from '../_models/tag';
 import { PhotoStats } from '../_models/photostat';
 import { UserWithoutMainPhoto } from '../_models/userWithoutMainPhoto';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-
   baseUrl = environment.apiUrl;
-  private http = inject(HttpClient);
+
+  constructor(private http:HttpClient) {}
 
   getUserWithRoles() {
     return this.http.get<User[]>(this.baseUrl + 'AdminConroller/users-with-roles');

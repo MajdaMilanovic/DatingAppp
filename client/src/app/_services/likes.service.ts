@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Member } from '../_models/member';
@@ -10,9 +10,10 @@ import { setPaginatedResponse, setPaginationHeaders } from './paginationHelper';
 })
 export class LikesService {
   baseUrl = environment.apiUrl;
-  private http = inject(HttpClient);
   likeIds = signal<number[]>([]);
   paginatedResult = signal<PaginatedResult<Member[]> | null>(null);
+
+  constructor(private http:HttpClient) {}
 
   toggleLike(targetId: number) {
     return this.http.post(`${this.baseUrl}Likes/${targetId}`, {});

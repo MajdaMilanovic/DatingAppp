@@ -16,8 +16,8 @@ import { HasRoleDirective } from '../_directives/has-role.directive';
 export class NavComponent {
 model: any = {};
 accountService = inject(AccountService);
-private router = inject(Router);
-private toastr = inject(ToastrService);
+constructor( private router:Router,
+             private toastr:ToastrService) {}
 
 login()
 {

@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Member } from '../../_models/member';
 import { AccountService } from '../../_services/account.service';
 import { MembersService } from '../../_services/members.service';
@@ -24,9 +24,9 @@ export class MemberEditComponent implements OnInit {
     }
   }
   member?: Member;
-  private accountService = inject(AccountService);
-  private memberService = inject(MembersService);
-  private toastr = inject(ToastrService);
+  constructor(  private accountService:AccountService,
+                private memberService:MembersService,
+                private toastr:ToastrService) {}
 
   ngOnInit(): void {
    this.loadMember();

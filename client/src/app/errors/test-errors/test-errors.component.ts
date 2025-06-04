@@ -11,9 +11,8 @@ import { environment } from '../../../environments/environment';
 })
 export class TestErrorsComponent {
   baseUrl = environment.apiUrl;
-  private http = inject(HttpClient);
   validationErrors: string [] = [];
-
+  constructor(  private http:HttpClient) {}
 
   get400error() {
     this.http.get(this.baseUrl + 'Buggy/bad-request').subscribe ({

@@ -21,7 +21,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
   styleUrl: './photo-editor.component.css'
 })
 
-
 export class PhotoEditorComponent implements OnInit{
  
   constructor( private accountService: AccountService,
@@ -157,30 +156,4 @@ export class PhotoEditorComponent implements OnInit{
   }
 
 }
-
-
-    // connectTag(tagId: number[], id:number) {
-    //   const photoId = id;
-    //   const payload = {tagId, photoId};
-    //   console.log('Sending to backend:', payload);
-
-    //   if(!this.selectedTags.length){
-    //     console.log("tag");
-    //     return;
-    //   }
-    //   else if( !id){
-    //     console.log("slika");
-    //     return;
-    //   }
-    
-    //   this.http.post(this.baseUrl + `Tags/api/photos/${id}/tags`, tagId).subscribe({
-    //     next: () => {
-    //       this.toastr.success("Tag connected successfully!");
-    //     },
-    //     error:(err) => {
-    //       this.toastr.error("Administrator should approve first!");
-    //     }
-    //   });
-    // }
-
 

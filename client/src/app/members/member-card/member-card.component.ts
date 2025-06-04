@@ -12,6 +12,7 @@ import { PresenceService } from '../../_services/presence.service';
   styleUrl: './member-card.component.css'
 })
 export class MemberCardComponent {
+  
   private likeService = inject(LikesService);
   presenceService = inject(PresenceService);
   member = input.required<Member>();
