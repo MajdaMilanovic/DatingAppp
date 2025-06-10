@@ -3,9 +3,7 @@
       <a class="navbar-brand" routerLink="/" routerLinkActive="active">Dating App</a>
      
       
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          @if(accountService.currentUser())
-          {
+        <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="isLoggedIn$ | async ">
           <li class="nav-item">
             <a routerLink="/members" routerLinkActive="active" class="nav-link">Matches</a>
           </li>
@@ -21,32 +19,28 @@
           <li class="nav-item">
             <a class="nav-link" (click)="logout()">Logout</a>
           </li>
-          }
           <li class="nav-item">
             <a routerLink="/errors" routerLinkActive="active" class="nav-link">Errors</a>
           </li>
         </ul>
       
-      
-      @if(accountService.currentUser())
-      {
-        <div dropdown class="dropdown">
-          <img class="me-2"
-               src="{{accountService.currentUser()?.photoUrl || './assets/user.png'}}"
-               alt="user main image">
-          <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">
-            Welcome {{accountService.currentUser()?.knownAs }}</a>
+    
+      <ng-container *ngIf="currentUser$ | async as user; else loginForm">
+      <div dropdown class="dropdown">
+        <img class="me-2"
+        [src]="user.photoUrl || './assets/user.png'"
+        alt="user main image">
+        <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">
+          Welcome {{user.knownAs }}</a>
           <div *dropdownMenu class="dropdown-menu">
             <a routerLink="/member/edit" class="dropdown-item">Edit profile</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>
         </div>
-
-      }
-
-      @if(!accountService.currentUser())
-      {
+      </ng-container>
+      
+    <ng-template #loginForm>
         <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex" autocomplete="off">
           <input name="username"
                  [(ngModel)]="model.username"
@@ -59,7 +53,6 @@
                  type="password">
           <button class="btn btn-success" type="submit">Login</button>
         </form>
-      }
-      
+        </ng-template>
       </div>
   </nav>

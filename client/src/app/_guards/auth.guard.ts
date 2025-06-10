@@ -1,18 +1,25 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthStoreService } from '../_services/auth-store.service';
+import { map, take } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = (route, state) => {
+  const authStore = inject(AuthStoreService);
   const accountService = inject(AccountService);
   const toastr = inject(ToastrService);
-  
-  if(accountService.currentUser())
-  {
-    return true;
-  }
-  else {
-    toastr.error('You shall not pass!');
-    return false;
-  }
+  const router = inject(Router);
+
+  return authStore.currentUser$.pipe(
+    take(1),
+    map(user => {
+      if(user) {
+        return true;
+      } else {
+        toastr.error('You shall not pass!');
+        return router.createUrlTree(['/login']);
+      }
+    })
+  );
 };

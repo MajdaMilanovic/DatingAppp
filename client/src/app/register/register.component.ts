@@ -1,9 +1,9 @@
 import { Component, OnInit, output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { AccountService } from '../_services/account.service';
 import { InputComponent } from '../_forms/text/input/input.component';
 import { DatePickerComponent } from "../_forms/date-picker/date-picker.component";
 import { Router } from '@angular/router';
+import { AuthStoreService } from '../_services/auth-store.service';
 
 @Component({
   selector: 'app-register',
@@ -18,9 +18,9 @@ export class RegisterComponent implements OnInit{
   maxDate = new Date();
   validationErrors: string[] | undefined;
 
-  constructor(private accountService:AccountService,
-                private fb:FormBuilder,
-                private router:Router) {}
+  constructor(  private fb:FormBuilder,
+                private router:Router,
+                private authStore:AuthStoreService) {}
   
   ngOnInit(): void {
     this.initializeForm();
@@ -53,13 +53,14 @@ export class RegisterComponent implements OnInit{
 register() {
   const dob = this.getDateOnly(this.registerForm.get('dateOfBirth')?.value);
   this.registerForm.patchValue({dateOfBirth: dob});
+
   console.log(this.registerForm.value);
-  this.accountService.register(this.registerForm.value).subscribe({
+  this.authStore.register(this.registerForm.value).subscribe({
     next:_ => this.router.navigateByUrl('/members'),
     error: error => {
      this.validationErrors = error;
     }
-  })
+  });
 }
 
 cancel() {

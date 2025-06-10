@@ -30,8 +30,6 @@ export class LikesService {
   }
 
   getLikeIds() {
-    return this.http.get<number[]>(`${this.baseUrl}Likes/list`).subscribe({
-      next: ids => this.likeIds.set(ids)
-    })
+    return this.http.get<number[]>(`${this.baseUrl}Likes/list`);
   }
 }

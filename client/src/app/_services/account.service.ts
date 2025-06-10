@@ -45,7 +45,6 @@ export class AccountService {
         }
       })
     )
-  
   }
 
   setCurrentUser(user : User) {
@@ -54,8 +53,6 @@ export class AccountService {
           this.likeService.getLikeIds();
           this.presenceService.createHubConnection(user);
     }
-  
-
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
