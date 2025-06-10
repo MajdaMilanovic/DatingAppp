@@ -6,6 +6,7 @@ import { Photo } from '../_models/photo';
 import { Tag } from '../_models/tag';
 import { PhotoStats } from '../_models/photostat';
 import { UserWithoutMainPhoto } from '../_models/userWithoutMainPhoto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

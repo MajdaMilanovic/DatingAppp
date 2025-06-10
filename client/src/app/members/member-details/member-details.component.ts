@@ -9,11 +9,14 @@ import { MessageService } from '../../_services/message.service';
 import { PresenceService } from '../../_services/presence.service';
 import { AccountService } from '../../_services/account.service';
 import { HubConnectionState } from '@microsoft/signalr';
+import { PhotoFilterService } from '../../_services/photo-filter.service';
+import { FormsModule } from '@angular/forms';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-member-details',
   standalone: true,
-  imports: [TabsModule, GalleryModule, TimeagoModule, MemberMessagesComponent],
+  imports: [TabsModule, GalleryModule, TimeagoModule, MemberMessagesComponent, FormsModule, NgIf, NgFor, AsyncPipe],
   templateUrl: './member-details.component.html',
   styleUrl: './member-details.component.css'
 })
@@ -24,8 +27,15 @@ export class MemberDetailsComponent implements OnInit, OnDestroy {
   member: Member = {} as Member;
   images: GalleryItem[] = [];
   activeTab?: TabDirective;
+  tagFilter = "";
+  filteredPhotos$ = this.photoFilterService.filteredPhotos$;
 
-  constructor(private messageService:MessageService, private accountService:AccountService,  private route:ActivatedRoute, private router:Router) {}
+  constructor(private messageService:MessageService,
+              private accountService:AccountService,  
+              private route:ActivatedRoute, 
+              private router:Router, 
+              private photoFilterService: PhotoFilterService) {}
+
   ngOnInit() {
     this.route.data.subscribe({
       next: data => {
@@ -46,6 +56,8 @@ export class MemberDetailsComponent implements OnInit, OnDestroy {
         params['tab'] && this.selectTab(params['tab'])
       }
     })
+
+    this.photoFilterService['rawPhotosSubject'].next(this.member.photos);
   }
 
   selectTab(heading: string) {
@@ -86,5 +98,20 @@ export class MemberDetailsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
       this.messageService.stopHubConnection();
     }
+
+
+    filterPhotosByTags() {
+    const tags = this.tagFilter
+      .split(',')
+      .map((t) => t.trim().toLowerCase())
+      .filter((t) => t.length > 0);
+ 
+    this.photoFilterService.setTagFilter(tags);
+  }
+ 
+    clearPhotoFilter() {
+    this.tagFilter = '';
+    this.photoFilterService.clearFilter();
+  }
     
   }

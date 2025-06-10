@@ -1,5 +1,8 @@
 .img img-tumbnail {
-    height: 175px;
-    min-width: 175px !important;
-    margin-bottom:2px;
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 8px;
 }

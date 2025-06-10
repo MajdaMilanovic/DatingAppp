@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Photo } from '../../_models/photo';
 import { AdminService } from '../../_services/admin.service';
 import { FormsModule } from '@angular/forms';
@@ -81,4 +81,5 @@ export class PhotoManagementComponent implements OnInit {
       },
     });
   }
+  
 }

@@ -6,6 +6,7 @@ import { PhotoManagementComponent } from "../photo-management/photo-management.c
 import { TagManagementComponent } from "../tag-management/tag-management.component";
 import { StatisticsComponent } from '../statistics/statistics.component';
 
+
 @Component({
   selector: 'app-admin-panel',
   standalone: true,

@@ -48,12 +48,34 @@
                 </tab>
                 <tab heading="Photos" #photoTab="tab" (selectTab)="onTabActivated($event)">
                     @if (photoTab.active) {
-                        <gallery 
-                        [items]="images" 
-                        [itemAutosize]="true"
-                        class="gallery">
-                        </gallery>
-                    }
+                        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Filter by tags (e.g. travel, summer)"
+            [(ngModel)]="tagFilter"
+          />
+ 
+          <button
+            class="btn btn-primary mt-2 me-2"
+            (click)="filterPhotosByTags()">Filter</button>
+          <button class="btn btn-secondary mt-2" (click)="clearPhotoFilter()">Clear</button>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4 mb-3" *ngFor="let photo of filteredPhotos$ | async">
+            <img [src]="photo.url" class="img-thumbnail mb-1" />
+ 
+            <div class="text-center" *ngIf="photo.tags?.length">
+              <span
+                class="badge bg-secondary me-1"
+                *ngFor="let tag of photo.tags"
+              >
+                {{ tag.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+            }
                 </tab>
                 <tab heading="Messages" (selectTab)="onTabActivated($event)">
                     <app-member-messages 

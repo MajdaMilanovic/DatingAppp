@@ -17,12 +17,12 @@
     </button>
   </div>
 
-  @for (photo of filteredPhotos; track photo.id) {
+  @for (photo of filteredPhotos$ | async; track photo.id) {
   <div class="col-2 photo-editor__img-wrapper">
     <img
       src="{{ photo.url }}"
       alt="photo of user"
-      class="photo-editor__img-thumbnail mb-2 mt-2"
+      class="img-thumbnail mb-2 mt-2"
       [class.photo-editor__.not-approved]="!photo.isApproved"
     />
     @if (photo.tags?.length) {

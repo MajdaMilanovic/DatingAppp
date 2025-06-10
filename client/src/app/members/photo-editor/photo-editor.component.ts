@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { Member } from '../../_models/member';
-import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { FileItem, FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { AccountService } from '../../_services/account.service';
 import { environment } from '../../../environments/environment';
@@ -10,24 +10,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { PhotoFilterService } from '../../_services/photo-filter.service';
 
 
 
 @Component({
   selector: 'app-photo-editor',
   standalone: true,
-  imports: [NgIf, NgFor, NgStyle, NgClass, FileUploadModule, DecimalPipe, FormsModule, BsDropdownModule],
+  imports: [NgIf, NgFor, NgStyle, NgClass, FileUploadModule, DecimalPipe, FormsModule, BsDropdownModule, AsyncPipe],
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.css'
 })
 
 export class PhotoEditorComponent implements OnInit{
- 
-  constructor( private accountService: AccountService,
-               private memberService: MembersService,
-               private http: HttpClient,
-               private toastr: ToastrService) {
-  }
   member = input.required<Member>();
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
@@ -36,11 +31,20 @@ export class PhotoEditorComponent implements OnInit{
   tagInput = '';
   tagFilter = '';
   filteredPhotos: Photo[] = [];
+  filteredPhotos$ = this.photoFilterService.filteredPhotos$;
+  
+   constructor( private accountService: AccountService,
+                private memberService: MembersService,
+                private http: HttpClient,
+                private toastr: ToastrService,
+                private photoFilterService: PhotoFilterService) {
+   }
 
   
   ngOnInit(): void {
     this.initializeUploader();
-   this.filteredPhotos = this.member().photos;
+   //this.filteredPhotos = this.member().photos;
+   this.photoFilterService.setPhotosForCurrentView(this.member().photos);
   }
 
   fileOverBase(e:any) {
@@ -119,6 +123,7 @@ export class PhotoEditorComponent implements OnInit{
           if(p.id === photo.id) p.isMain = true;
         });
         this.memberChange.emit(updatedMember);
+        this.photoFilterService.setPhotosForCurrentView(updatedMember.photos);
         this.filteredPhotos = updatedMember.photos;
       }
     };
@@ -131,21 +136,12 @@ export class PhotoEditorComponent implements OnInit{
       .map((t) => t.trim().toLowerCase())
       .filter((t) => t.length > 0);
 
-    if (!tags.length) {
-
-      this.filteredPhotos = this.member().photos;
-      return;
-    }
-
-    this.filteredPhotos = this.member().photos.filter((photo) =>
-      photo.tags?.some((tag) => tags.includes(tag.name.toLowerCase()))
-    );
+      this.photoFilterService.setTagFilter(tags);
   }
 
    clearFilter() {
     this.tagFilter = '';
-
-    this.filteredPhotos = this.member().photos;
+    this.photoFilterService.setPhotosForCurrentView(this.member().photos);
   }
 
   filterPhotosByTag(tagName: string) {
