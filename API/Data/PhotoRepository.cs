@@ -14,23 +14,22 @@ public class PhotoRepository(DataContext context) : IPhotoRepository
         .IgnoreQueryFilters()
         .SingleOrDefaultAsync(x => x.Id == id);
     }
-
     public async Task<IEnumerable<PhotoWithTagsDto>> GetUnapprovedPhotos()
     {
         return await context.Photos
         .IgnoreQueryFilters()
         .Where(p => p.IsApproved == false)
-        .Include(p=>p.PhotoTags)
-                .ThenInclude(pt=>pt.Tag)
+        .Include(p => p.PhotoTags)
+                .ThenInclude(pt => pt.Tag)
                 .Select(u => new PhotoWithTagsDto
                 {
                     Id = u.Id,
                     Url = u.Url,
                     IsApproved = u.IsApproved,
-                    Tags=u.PhotoTags.Select(pt=> new TagDto
+                    Tags = u.PhotoTags.Select(pt => new TagDto
                     {
-                        Id=pt.TagId,
-                        Name=pt.Tag.Name
+                        Id = pt.TagId,
+                        Name = pt.Tag.Name
                     }).ToList()
                 }).ToListAsync();
     }
@@ -80,4 +79,25 @@ public class PhotoRepository(DataContext context) : IPhotoRepository
     {
         await context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<PhotoWithTagsDto>> GetApprovedPhotos()
+    {
+        return await context.Photos
+        .IgnoreQueryFilters()
+        .Where(p => p.IsApproved == true)
+        .Include(p => p.PhotoTags)
+                .ThenInclude(pt => pt.Tag)
+                .Select(u => new PhotoWithTagsDto
+                {
+                    Id = u.Id,
+                    Url = u.Url,
+                    IsApproved = u.IsApproved,
+                    Tags = u.PhotoTags.Select(pt => new TagDto
+                    {
+                        Id = pt.TagId,
+                        Name = pt.Tag.Name
+                    }).ToList()
+                }).ToListAsync();
+    }
+
 }

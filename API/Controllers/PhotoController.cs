@@ -6,6 +6,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Interfaces;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Authorize]
-    public class PhotoController(UnitOfWork unitOfWork, IMapper mapper) : BaseApiController
+    public class PhotoController(IUnitOfWork unitOfWork, IMapper mapper) : BaseApiController
     {
         [HttpGet("filter-by-tags")]
 
@@ -30,7 +31,6 @@ namespace API.Controllers
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
-
         [HttpGet("unapproved-by-tags")]
 
         public async Task<ActionResult<IEnumerable<PhotoWithTagsDto>>> GetUnapprovedPhotosByTags([FromQuery] List<string> tags)
@@ -50,6 +50,12 @@ namespace API.Controllers
             return Ok(mapper.Map<IEnumerable<PhotoWithTagsDto>>(photos));
         }
 
+        [HttpGet("approved")]
+        public async Task<ActionResult<IEnumerable<PhotoWithTagsDto>>> GetApprovedPhotos()
+        {
+            var photos = await unitOfWork.PhotoRepository.GetApprovedPhotos();
+            return Ok(mapper.Map<IEnumerable<PhotoWithTagsDto>>(photos));
+        }
         
     }
 }

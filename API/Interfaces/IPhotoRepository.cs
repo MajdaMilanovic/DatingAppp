@@ -12,5 +12,6 @@ public interface IPhotoRepository
     Task<Photo?> GetPhotoById(int id);
     void RemovePhoto(Photo photo);
     Task<AppUser?> GetUserByPhotoId(int photoId);
+     Task<IEnumerable<PhotoWithTagsDto>> GetApprovedPhotos();
     void SaveChangesAsync();
 }

@@ -11,7 +11,6 @@ export class LoadingService {
 
   show():void {
     this.requestCount++;
-    console.log('Loading started', this.requestCount);
     if(this.requestCount === 1) {
       this.loadingSubject.next(true);
     }
@@ -21,7 +20,6 @@ export class LoadingService {
     if(this.requestCount > 0) {
       this.requestCount --;
     }
-    console.log('Loading ended', this.requestCount);
     if(this.requestCount === 0) {
       this.loadingSubject.next(false);
     }

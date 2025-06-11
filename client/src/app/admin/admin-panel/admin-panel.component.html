@@ -21,9 +21,16 @@
 
         <tab heading="Statistics" *appHasRole="['Admin','Moderator']">
             <div class="container">
-
                <app-statistics></app-statistics>
 
+
+
+            </div>
+        </tab>
+
+         <tab heading="ApprovedFeed" *appHasRole="['Admin','Moderator']">
+            <div class="container">
+                <app-approved-feed />
             </div>
         </tab>
     </tabset>
