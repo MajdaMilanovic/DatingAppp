@@ -1,0 +1,26 @@
+<div class="container mt-3">
+  <h3>Photo Approval Statistics</h3>
+  <table class="table table-bordered table-sm table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Approved Photos</th>
+        <th>Unapproved Photos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stat of photoStats">
+        <td>{{ stat.username }}</td>
+        <td>{{ stat.approvedPhotos }}</td>
+        <td>{{ stat.unapprovedPhotos }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="mt-5">Users Without Main Photo</h3>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let user of usersWithoutMainPhoto">
+      {{ user.username }}
+    </li>
+  </ul>
+</div>

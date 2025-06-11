@@ -20,6 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+// builder.Services.AddDbContext<DataContext>(options => 
+// options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo

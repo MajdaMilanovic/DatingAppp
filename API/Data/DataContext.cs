@@ -1,6 +1,8 @@
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
@@ -11,56 +13,99 @@ public class DataContext(DbContextOptions options) : IdentityDbContext<AppUser, 
         
         public DbSet<UserLike> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
-         public DbSet<Group> Groups { get; set; }
-          public DbSet<Connection> Connections { get; set; }
-          public DbSet<Photo> Photos { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Connection> Connections { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<PhotoTag> PhotoTags { get; set; }
+    public DbSet<PhotoApprovalStatisticsDto> PhotoApprovalStats { get; set; }
+    public DbSet<UserWithoutMainPhotoDto> UsersWithoutMainPhoto { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    public async Task<List<PhotoApprovalStatisticsDto>> GetPhotoApprovalStatsAsync(string currentUserId)
     {
-        base.OnModelCreating(builder);
+        
+       var userIdParam = new SqlParameter("@CurrentUserId", currentUserId);
 
-        builder.Entity<AppUser>()
-        .HasMany(ur => ur.UserRoles)
-        .WithOne(u => u.User)
-        .HasForeignKey(ur => ur.UserId)
-        .IsRequired();
-
-        builder.Entity<AppRole>()
-        .HasMany(ur => ur.UserRoles)
-        .WithOne(u => u.Role)
-        .HasForeignKey(ur => ur.RoleId)
-        .IsRequired();
-
-       builder.Entity<UserLike>()
-       .HasKey(k => new {k.SourceUserId, k.TargetUserId});
-
-       builder.Entity<UserLike>()
-       .HasOne(s => s.SourceUser)
-       .WithMany(l => l.LikedUsers)
-       .HasForeignKey(s => s.SourceUserId)
-       .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<UserLike>()
-       .HasOne(s => s.TargetUser)
-       .WithMany(l => l.LikedByOtherUsers)
-       .HasForeignKey(s => s.TargetUserId)
-       .OnDelete(DeleteBehavior.Cascade);
-       
-
-       builder.Entity<Message>()
-       .HasOne(x => x.Recipient)
-       .WithMany(x => x.MessageRecieved)
-       .OnDelete(DeleteBehavior.Restrict);
-
-       builder.Entity<Message>()
-       .HasOne(x => x.Sender)
-       .WithMany(x => x.MessageSent)
-       .OnDelete(DeleteBehavior.Restrict);
-
-       builder.Entity<Photo>().HasQueryFilter(p => p.IsApproved);
-
-
+        return await this.PhotoApprovalStats
+                    .FromSqlRaw("EXEC GetPhotoApprovalStatistics @CurrentUserId", userIdParam)
+                    .ToListAsync();
     }
+
+    public async Task<List<UserWithoutMainPhotoDto>> GetUsersWithoutMainPhotoAsync(string currentUserId)
+    {
+        var userIdParam = new SqlParameter("@CurrentUserId", currentUserId);
+        return await this.UsersWithoutMainPhoto
+                    .FromSqlRaw("EXEC GetUsersWithoutMainPhotos @CurrentUserId", userIdParam)
+                    .ToListAsync();
+    }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+                base.OnModelCreating(builder);
+
+                builder.Entity<AppUser>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+
+                builder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
+                builder.Entity<UserLike>()
+                .HasKey(k => new { k.SourceUserId, k.TargetUserId });
+
+                builder.Entity<UserLike>()
+                .HasOne(s => s.SourceUser)
+                .WithMany(l => l.LikedUsers)
+                .HasForeignKey(s => s.SourceUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                builder.Entity<UserLike>()
+               .HasOne(s => s.TargetUser)
+               .WithMany(l => l.LikedByOtherUsers)
+               .HasForeignKey(s => s.TargetUserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+
+                builder.Entity<Message>()
+                .HasOne(x => x.Recipient)
+                .WithMany(x => x.MessageRecieved)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                builder.Entity<Message>()
+                .HasOne(x => x.Sender)
+                .WithMany(x => x.MessageSent)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                builder.Entity<Photo>().HasQueryFilter(p => p.IsApproved);
+
+                builder.Entity<PhotoTag>()
+                .HasKey(tag => new { tag.PhotoId, tag.TagId });
+
+                builder.Entity<PhotoTag>()
+                .HasOne(p => p.Photo)
+                .WithMany(tag => tag.PhotoTags)
+                .HasForeignKey(p => p.PhotoId);
+
+                builder.Entity<PhotoTag>()
+                .HasOne(t => t.Tag)
+                .WithMany(tag => tag.PhotoTags)
+                .HasForeignKey(t => t.TagId);
+
+                builder.Entity<Tag>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+
+                builder.Entity<UserWithoutMainPhotoDto>().HasNoKey();
+                builder.Entity<PhotoApprovalStatisticsDto>().HasNoKey();
+
+
+        }
 
 
         

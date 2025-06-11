@@ -13,5 +13,18 @@
                 <app-photo-management></app-photo-management>
             </div>
         </tab>
+        <tab heading="Tag management" *appHasRole="['Admin', 'Moderator']">
+            <div class="container">
+                <app-tag-management></app-tag-management>
+            </div>
+        </tab>
+
+        <tab heading="Statistics" *appHasRole="['Admin','Moderator']">
+            <div class="container">
+
+               <app-statistics></app-statistics>
+
+            </div>
+        </tab>
     </tabset>
 </div>

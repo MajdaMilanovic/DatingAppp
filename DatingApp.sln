@@ -5,18 +5,27 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C66D940E-BAFB-4B93-BBBA-B472E32A836B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoApprovalLogicTests", "PhotoApprovalLogicTests\PhotoApprovalLogicTests.csproj", "{35B16FA8-9A1D-436D-92F2-BE06B8D116B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C66D940E-BAFB-4B93-BBBA-B472E32A836B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C66D940E-BAFB-4B93-BBBA-B472E32A836B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C66D940E-BAFB-4B93-BBBA-B472E32A836B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C66D940E-BAFB-4B93-BBBA-B472E32A836B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B16FA8-9A1D-436D-92F2-BE06B8D116B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B16FA8-9A1D-436D-92F2-BE06B8D116B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B16FA8-9A1D-436D-92F2-BE06B8D116B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B16FA8-9A1D-436D-92F2-BE06B8D116B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ACEB9214-EA94-4A3F-B75F-0FDE351596C8}
 	EndGlobalSection
 EndGlobal

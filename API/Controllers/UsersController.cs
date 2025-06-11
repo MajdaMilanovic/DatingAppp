@@ -1,4 +1,7 @@
 using System.Security.Claims;
+using System.Security.Cryptography.Xml;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using API.Controllers;
 using API.Data;
 using API.DTOs;
@@ -14,11 +17,13 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers;
 
 [Authorize]
-public class UsersController(IUnitOfWork unitOfWork, 
-IMapper mapper, IPhotoService photoService) : BaseApiController
+public class UsersController(
+    IUnitOfWork unitOfWork, 
+    IMapper mapper,
+    IPhotoService photoService,
+    DataContext context) : BaseApiController
 {
 
-   
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>>GetUsers([FromQuery]UserParams userParams)
     {
@@ -54,7 +59,7 @@ IMapper mapper, IPhotoService photoService) : BaseApiController
     } 
 
     [HttpPost("add-photo")]
-    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+    public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file, [FromForm] string? tagNames)
     {
         var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
         if(user == null) return BadRequest("Cannot update user");
@@ -71,8 +76,30 @@ IMapper mapper, IPhotoService photoService) : BaseApiController
 
         if(await unitOfWork.Complete()) return CreatedAtAction(nameof(GetUser), new {username = user.UserName}, mapper.Map<PhotoDto>(photo));
 
-        return BadRequest("Problem adding photo");
+        if (!string.IsNullOrWhiteSpace(tagNames))
+        {
+            var tagList = JsonSerializer.Deserialize<List<string>>(tagNames);
+            foreach (var name in tagList!)
+            {
+                var tag = await context.Tags.FirstOrDefaultAsync(t => t.Name.ToLower() == name.ToLower());
+                if (tag == null)
+                {
+                    tag = new Tag { Name = name };
+                    context.Tags.Add(tag);
+                    await context.SaveChangesAsync();
+                }
+                context.PhotoTags.Add(new PhotoTag
+                {
+                    PhotoId = photo.Id,
+                    TagId = tag.Id
+                });
+            }
+            await context.SaveChangesAsync();
 
+            return Ok(new { photo.Id });
+        }
+
+            return BadRequest("Problem adding photo");
     }
 
     [HttpPut("set-main-photo/{photoId:int}")]
@@ -94,6 +121,65 @@ IMapper mapper, IPhotoService photoService) : BaseApiController
         return BadRequest("Problem setting main photo");
 
     }
+     [HttpPost("add-photo-with-tags")]
+        public async Task<ActionResult<PhotoWithTagsDto>> AddPhotoWithTags(IFormFile file,
+            [FromQuery] List<string> tags)
+        {
+
+            var user = await unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+
+            if (user == null) return BadRequest("Cannot update user");
+
+
+
+            var result = await photoService.AddPhotoAsync(file);
+
+            if (result.Error != null) return BadRequest(result.Error.Message);
+
+
+
+            var photo = new Photo
+
+            {
+
+                Url = result.SecureUrl.AbsoluteUri,
+
+                PublicId = result.PublicId
+
+            };
+
+        var validTags = tags.Where(t => !string.IsNullOrWhiteSpace(t))
+        .Select(t => t.Trim().ToLower()).Distinct().ToList();
+
+        foreach (var tagName in validTags)
+        {
+            if(!Regex.IsMatch(tagName, @"^[a-zA-Z0-9\s\-]{2,30}$"))
+                return BadRequest($"Invalid tag: {tagName}");
+        }
+
+        foreach (var tagName in validTags)
+        {
+            var tag = await unitOfWork.TagRepository.GetOrCreateTagAsync(tagName);
+
+            photo.PhotoTags.Add(new PhotoTag { Photo = photo, Tag = tag });
+        }
+            user.Photos.Add(photo);
+
+
+
+            if (await unitOfWork.Complete())
+
+            {
+
+                return CreatedAtAction(nameof(GetUser),
+
+                    new { username = user.UserName },
+                    mapper.Map<PhotoWithTagsDto>(photo)
+                    );
+
+            }
+            return BadRequest("Problem adding photo");
+        }
     [HttpDelete("delete-photo/{photoId:int}")]
     public async Task<ActionResult> DeletePhoto ( int photoId)
     {
