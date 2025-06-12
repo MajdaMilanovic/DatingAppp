@@ -1,70 +1,83 @@
-
-    <div class="row">
-        <div class="col-4">
-            <div class="card">
-                <img 
-                 src="{{member.photoUrl || './assets/user.png'}}" 
-                 alt="{{member.knownAs}}"
-                 class="card-img img-thumbnail">
-                 <div class="card-body">
-                    @if(presenceService.onlineUsers().includes(member.username)){
-                        <div class="mb-2">
-                            <i class="fa fa-user-circle text-success">Online now</i>
-                        </div>
-                    }
-                    <div>
-                        <strong>Age:</strong>
-                        <p>{{member.age}}</p>
-                    </div>
-                    <div>
-                        <strong>Last active:</strong>
-                        <p>{{member.lastActive | timeago}}</p>
-                    </div>
-                    <div>
-                        <strong>Location:</strong>
-                        <p>{{member.city}}, {{member.country}}</p>
-                    </div>
-                 </div>
-                 <div class="card-footer">
-                    <div class="btn-group d-flex">
-                        <button class="btn btn-primary">Like</button>
-                        <button (click)="selectTab('Messages')" class="btn btn-success">Message</button>
-                    </div>
-                 </div>
-
-            </div>
+<div class="row">
+  <div class="col-4">
+    <div class="card">
+      <img
+        src="{{ member.photoUrl || './assets/user.png' }}"
+        alt="{{ member.knownAs }}"
+        class="card-img img-thumbnail"
+      />
+      <div class="card-body">
+        @if(presenceService.onlineUsers().includes(member.username)){
+        <div class="mb-2">
+          <i class="fa fa-user-circle text-success">Online now</i>
         </div>
-        <div class="col-8">
-            <tabset class="member-tabset" #memberTabs>
-                <tab heading="About {{member.knownAs}}" (selectTab)="onTabActivated($event)">
-                    <h4>Description</h4>
-                    <p>{{member.introduction}}</p>
-                    <h4>Lookin for</h4>
-                    <p>{{member.lookingFor}}</p>
-                </tab>
-                <tab heading="Interests">
-                    <h4>Interests</h4> 
-                    <p>{{member.interests}}</p>
-                </tab>
-                <tab heading="Photos" #photoTab="tab" (selectTab)="onTabActivated($event)">
-                    @if (photoTab.active) {
-                        <div class="mb-3">
+        }
+        <div>
+          <strong>Age:</strong>
+          <p>{{ member.age }}</p>
+        </div>
+        <div>
+          <strong>Last active:</strong>
+          <p>{{ member.lastActive | timeago }}</p>
+        </div>
+        <div>
+          <strong>Location:</strong>
+          <p>{{ member.city }}, {{ member.country }}</p>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="btn-group d-flex">
+          <button class="btn btn-primary">Like</button>
+          <button (click)="selectTab('Messages')" class="btn btn-success">
+            Message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8">
+    <tabset class="member-tabset" #memberTabs>
+      <tab
+        heading="About {{ member.knownAs }}"
+        (selectTab)="onTabActivated($event)"
+      >
+        <h4>Description</h4>
+        <p>{{ member.introduction }}</p>
+        <h4>Lookin for</h4>
+        <p>{{ member.lookingFor }}</p>
+      </tab>
+      <tab heading="Interests">
+        <h4>Interests</h4>
+        <p>{{ member.interests }}</p>
+      </tab>
+      <tab
+        heading="Photos"
+        #photoTab="tab"
+        (selectTab)="onTabActivated($event)"
+      >
+        @if (photoTab.active) {
+        <div class="mb-3">
           <input
             type="text"
             class="form-control"
             placeholder="Filter by tags (e.g. travel, summer)"
             [(ngModel)]="tagFilter"
           />
- 
+
           <button
             class="btn btn-primary mt-2 me-2"
-            (click)="filterPhotosByTags()">Filter</button>
-          <button class="btn btn-secondary mt-2" (click)="clearPhotoFilter()">Clear</button>
+            (click)="filterPhotosByTags()"
+          >
+            Filter
+          </button>
+          <button class="btn btn-secondary mt-2" (click)="clearPhotoFilter()">
+            Clear
+          </button>
         </div>
         <div class="row mt-3">
           <div class="col-4 mb-3" *ngFor="let photo of filteredPhotos$ | async">
             <img [src]="photo.url" class="img-thumbnail mb-1" />
- 
+
             <div class="text-center" *ngIf="photo.tags?.length">
               <span
                 class="badge bg-secondary me-1"
@@ -75,15 +88,12 @@
             </div>
           </div>
         </div>
-            }
-                </tab>
-                <tab heading="Messages" (selectTab)="onTabActivated($event)">
-                    <app-member-messages 
-                        [username]="member.username" 
-                        >
-                    </app-member-messages>
-                </tab>
-            </tabset>
-
-        </div>
-    </div>
+        }
+      </tab>
+      <tab heading="Messages" (selectTab)="onTabActivated($event)">
+        <app-member-messages [username]="member.username">
+        </app-member-messages>
+      </tab>
+    </tabset>
+  </div>
+</div>

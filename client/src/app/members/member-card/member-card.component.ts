@@ -1,6 +1,6 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Member } from '../../_models/member';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { LikesService } from '../../_services/likes.service';
 import { PresenceService } from '../../_services/presence.service';
 
@@ -9,29 +9,33 @@ import { PresenceService } from '../../_services/presence.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './member-card.component.html',
-  styleUrl: './member-card.component.css'
+  styleUrl: './member-card.component.css',
 })
 export class MemberCardComponent {
-  
-  private likeService = inject(LikesService);
-  presenceService = inject(PresenceService);
-  private router = inject(Router);
   member = input.required<Member>();
-  hasLiked = computed(() => this.likeService.likeIds().includes(this.member().id));
-  isOnline = computed(() => this.presenceService.onlineUsers().includes(this.member().username));
+  hasLiked = computed(() =>
+    this.likeService.likeIds().includes(this.member().id)
+  );
+  isOnline = computed(() =>
+    this.presenceService.onlineUsers().includes(this.member().username)
+  );
+
+  constructor(
+    private likeService: LikesService,
+    private presenceService: PresenceService
+  ) {}
 
   toggleLike() {
     this.likeService.toggleLike(this.member().id).subscribe({
       next: () => {
-        if(this.hasLiked()) {
-          this.likeService.likeIds.update(ids => ids.filter(x => x !== this.member().id));
+        if (this.hasLiked()) {
+          this.likeService.likeIds.update((ids) =>
+            ids.filter((x) => x !== this.member().id)
+          );
+        } else {
+          this.likeService.likeIds.update((ids) => [...ids, this.member().id]);
         }
-        else {
-          this.likeService.likeIds.update(ids => [...ids, this.member().id]);
-        }
-      }
-    })
+      },
+    });
   }
-
-
 }

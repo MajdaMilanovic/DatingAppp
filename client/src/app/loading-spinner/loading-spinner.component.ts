@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { NgxSpinnerComponent } from 'ngx-spinner';
+import { Component } from '@angular/core';
 import { LoadingService } from '../_services/loading.service';
 
 @Component({
@@ -8,8 +7,8 @@ import { LoadingService } from '../_services/loading.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './loading-spinner.component.html',
-  styleUrl: './loading-spinner.component.css'
+  styleUrl: './loading-spinner.component.css',
 })
 export class LoadingSpinnerComponent {
-loadingService = inject(LoadingService);
+  constructor(public loadingService: LoadingService) {}
 }
