@@ -1,3 +1,3 @@
-export interface UserWithoutMainPhoto{
-    username:string;
+export interface UserWithoutMainPhoto {
+  username: string;
 }

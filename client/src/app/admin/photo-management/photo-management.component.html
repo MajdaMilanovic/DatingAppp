@@ -1,28 +1,10 @@
-<div class="form-group mt-3">
-  <label for="tagFilter">Filter photos by tags:</label>
-
-  <input
-    type="text"
-    class="form-control"
-    [(ngModel)]="tagFilter"
-    placeholder="e.g. profile, summer"
-  />
-
-  <button class="btn btn-primary mt-2" (click)="loadPhotosByTags()">
-    Filter
-  </button>
-  <button class="btn btn-secondary mt-2 ms-2" (click)="getPhotosForApproval()">
-    Clear
-  </button>
-</div>
-
 <div class="row">
   @for (photo of photos; track photo.id) {
   <div class="col-2 mb-1">
     <h4>{{ photo.username }}</h4>
     <img
       src="{{ photo.url }}"
-      class="photo-management__img-thumbnail p-1"
+      class="img-thumbnail p-1"
       alt="{{ photo.username }}"
     />
     @if(photo.tags?.length){
@@ -30,7 +12,7 @@
     <div class="mb-3 text-center">
       @for(tag of photo.tags; track tag.id) {
 
-      <span class="badge bg-secondary me-1">{{tag.name}}</span>
+      <span class="badge bg-secondary me-1">{{ tag.name }}</span>
       }
     </div>
     }

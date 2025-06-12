@@ -1,0 +1,6 @@
+<div class="photo-grid" *ngIf="approvedPhotos$ | async as photos">
+  <div *ngFor="let photo of photos" class="photo-card">
+    <img [src]="photo.url" [alt]="photo.title" />
+    <p>{{ photo.title }}</p>
+  </div>
+</div>

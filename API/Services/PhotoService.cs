@@ -19,11 +19,6 @@ public class PhotoService : IPhotoService
 
     }
 
-    // public PhotoService(IPhotoRepository @object)
-    // {
-    //     this.@object = @object;
-    // }
-
     public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
     {
         var uploadResult = new ImageUploadResult();
@@ -52,20 +47,6 @@ public class PhotoService : IPhotoService
 
         return await _cloudinary.DestroyAsync(deleteParams);
     }
-    // public async Task ApprovePhotoAsync(int photoId)
-    // {
-    //     var photo = await _repository.GetPhotoById(photoId);
-    //     if (photo == null) throw new Exception("Photo not found");
-
-    //     photo.IsApproved = true;
-
-    //     var user = await _userRepository.GetUserByPhotoId(photoId);
-    //     if (user.MainPhotoId == null)
-    //     {
-    //         user.MainPhotoId = photoId;
-    //     }
-
-    //     await _unitOfWork.Complete();
-    // }
+  
 }
 

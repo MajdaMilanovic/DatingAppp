@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Photo } from '../../_models/photo';
 import { AdminService } from '../../_services/admin.service';
 import { FormsModule } from '@angular/forms';
@@ -9,29 +9,28 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './photo-management.component.html',
-  styleUrl: './photo-management.component.css'
+  styleUrl: './photo-management.component.css',
 })
 export class PhotoManagementComponent implements OnInit {
-  ngOnInit(): void {
-   this.getPhotosForApproval();
-  }
   photos: Photo[] = [];
-  adminService = inject(AdminService);
-  private toastr = inject(ToastrService);
-  tagFilter = '';
+  tagFilter: string = '';
+
+  constructor(
+    public adminService: AdminService,
+    private toastr: ToastrService
+  ) {}
+
+  ngOnInit() {
+    this.getPhotosForApproval();
+  }
 
   loadPhotosByTags() {
     const tagList = this.tagFilter
-
       .split(',')
-
       .map((tag) => tag.trim())
-
       .filter((tag) => tag.length > 0);
-
     if (tagList.length === 0) {
       this.getPhotosForApproval();
-
       return;
     }
 
@@ -42,21 +41,18 @@ export class PhotoManagementComponent implements OnInit {
 
       error: (err) => {
         console.log(err);
-
         this.toastr.error("Couldn't filter photos by tags");
       },
     });
   }
 
-  getPhotosForApproval() 
-  {
+  getPhotosForApproval() {
     this.adminService.getPhotosForApproval().subscribe({
-      next: photos => this.photos = photos
-    })
+      next: (photos) => (this.photos = photos),
+    });
   }
 
-  approvePhoto(photoId: number) 
-  {
+  approvePhoto(photoId: number) {
     this.adminService.approvePhoto(photoId).subscribe({
       next: () => {
         const photoToApprove = this.photos.find((p) => p.id === photoId);
@@ -71,8 +67,7 @@ export class PhotoManagementComponent implements OnInit {
     });
   }
 
-  rejectPhoto(photoId: number) 
-  {
+  rejectPhoto(photoId: number) {
     this.adminService.rejectPhoto(photoId).subscribe({
       next: () => {
         const photoToReject = this.photos.find((p) => p.id === photoId);

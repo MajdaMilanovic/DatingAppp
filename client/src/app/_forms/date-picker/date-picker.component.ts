@@ -1,17 +1,24 @@
 import { NgIf } from '@angular/common';
 import { Component, input, Self } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl, ReactiveFormsModule } from '@angular/forms';
-import { BsDatepickerConfig, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NgControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  BsDatepickerConfig,
+  BsDatepickerModule,
+} from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
   imports: [BsDatepickerModule, NgIf, ReactiveFormsModule],
   templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.css'
+  styleUrl: './date-picker.component.css',
 })
-export class DatePickerComponent  implements ControlValueAccessor{
-
+export class DatePickerComponent implements ControlValueAccessor {
   label = input<string>('');
   maxDate = input<Date>();
   bsConfig?: Partial<BsDatepickerConfig>;
@@ -20,24 +27,15 @@ export class DatePickerComponent  implements ControlValueAccessor{
     this.ngControl.valueAccessor = this;
     this.bsConfig = {
       containerClass: 'theme-red',
-      dateInputFormat: 'DD MM YYYY'
-    }
+      dateInputFormat: 'DD MM YYYY',
+    };
   }
-  writeValue(obj: any): void {
-    
-  }
-  registerOnChange(fn: any): void {
-    
-  }
-  registerOnTouched(fn: any): void {
-    
-  }
-  setDisabledState?(isDisabled: boolean): void {
-   
-  }
+  writeValue(obj: any): void {}
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {}
+  setDisabledState?(isDisabled: boolean): void {}
 
-  get control() : FormControl {
+  get control(): FormControl {
     return this.ngControl.control as FormControl;
   }
-
 }
