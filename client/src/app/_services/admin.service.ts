@@ -6,33 +6,48 @@ import { Photo } from '../_models/photo';
 import { Tag } from '../_models/tag';
 import { PhotoStats } from '../_models/photostat';
 import { UserWithoutMainPhoto } from '../_models/userWithoutMainPhoto';
-import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http:HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getUserWithRoles() {
-    return this.http.get<User[]>(this.baseUrl + 'AdminConroller/users-with-roles');
+    return this.http.get<User[]>(
+      this.baseUrl + 'AdminConroller/users-with-roles'
+    );
   }
 
   updateUserRoles(username: string, roles: string[]) {
-    return this.http.post<string[]>(this.baseUrl + 'AdminConroller/edit-roles/'
-       + username + '?roles=' + roles, {})
+    return this.http.post<string[]>(
+      this.baseUrl +
+        'AdminConroller/edit-roles/' +
+        username +
+        '?roles=' +
+        roles,
+      {}
+    );
   }
 
   getPhotosForApproval() {
-    return this.http.get<Photo[]>(this.baseUrl + 'AdminConroller/photos-to-moderate');
+    return this.http.get<Photo[]>(
+      this.baseUrl + 'AdminConroller/photos-to-moderate'
+    );
   }
   approvePhoto(photoId: number) {
-    return this.http.post(this.baseUrl + 'AdminConroller/approvePhoto/' + photoId, {});
+    return this.http.post(
+      this.baseUrl + 'AdminConroller/approvePhoto/' + photoId,
+      {}
+    );
   }
   rejectPhoto(photoId: number) {
-    return this.http.post(this.baseUrl + 'AdminConroller/rejectPhoto/' + photoId, {});
+    return this.http.post(
+      this.baseUrl + 'AdminConroller/rejectPhoto/' + photoId,
+      {}
+    );
   }
 
   getPhotosByTags(tags: string[]) {
@@ -51,14 +66,19 @@ export class AdminService {
   }
 
   deleteTag(tagId: number) {
-    return this.http.delete(this.baseUrl + 'AdminConroller/delete-tag/' + tagId);
+    return this.http.delete(
+      this.baseUrl + 'AdminConroller/delete-tag/' + tagId
+    );
   }
 
-
-  getPhotoApprovalStats(){
-    return this.http.get<PhotoStats[]>(this.baseUrl + 'AdminConroller/photo-stats');
+  getPhotoApprovalStats() {
+    return this.http.get<PhotoStats[]>(
+      this.baseUrl + 'AdminConroller/photo-stats'
+    );
   }
-   getUsersWithoutMainPhoto(){
-    return this.http.get<UserWithoutMainPhoto[]>(this.baseUrl + 'AdminConroller/users-without-main-photo');
+  getUsersWithoutMainPhoto() {
+    return this.http.get<UserWithoutMainPhoto[]>(
+      this.baseUrl + 'AdminConroller/users-without-main-photo'
+    );
   }
 }

@@ -4,12 +4,11 @@ import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.
 import { map } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfirmService {
   bsModalRef?: BsModalRef;
-  constructor(private modalService:BsModalService) {}
-  
+  constructor(private modalService: BsModalService) {}
 
   confirm(
     title = 'Confirmation',
@@ -22,17 +21,16 @@ export class ConfirmService {
         title,
         message,
         btnOkText,
-        btnCancelText
-      }
+        btnCancelText,
+      },
     };
     this.bsModalRef = this.modalService.show(ConfirmDialogComponent, config);
     return this.bsModalRef.onHidden?.pipe(
       map(() => {
-        if(this.bsModalRef?.content) {
+        if (this.bsModalRef?.content) {
           return this.bsModalRef.content.result;
         } else return false;
       })
-    )
-
+    );
   }
 }

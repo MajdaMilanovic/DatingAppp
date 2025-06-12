@@ -7,52 +7,53 @@ import { LikesService } from './likes.service';
 import { PresenceService } from './presence.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
   currentUser = signal<User | null>(null);
   roles = computed(() => {
     const user = this.currentUser();
-    if(user && user.token) {
+    if (user && user.token) {
       const role = JSON.parse(atob(user.token.split('.')[1])).role;
       return Array.isArray(role) ? role : [role];
     }
     return null;
-  })
+  });
 
-  constructor( private http:HttpClient,
-               private likeService:LikesService,
-              private presenceService:PresenceService) {}
-  
-  login(model:any) 
-  {
-    return this.http.post<User>(this.baseUrl + "Account/login", model).pipe(
-      map(user => {
-        if(user) {
+  constructor(
+    private http: HttpClient,
+    private likeService: LikesService,
+    private presenceService: PresenceService
+  ) {}
+
+  login(model: any) {
+    return this.http.post<User>(this.baseUrl + 'Account/login', model).pipe(
+      map((user) => {
+        if (user) {
           localStorage.setItem('user', JSON.stringify(user));
-          this.currentUser.set(user);        }
+          this.currentUser.set(user);
+        }
       })
-    )
+    );
   }
 
-  register(model:any) 
-  {
-    return this.http.post<User>(this.baseUrl + "Account/register", model).pipe(
-      map(user => {
-        if(user) {
+  register(model: any) {
+    return this.http.post<User>(this.baseUrl + 'Account/register', model).pipe(
+      map((user) => {
+        if (user) {
           this.setCurrentUser(user);
         }
       })
-    )
+    );
   }
 
-  setCurrentUser(user : User) {
+  setCurrentUser(user: User) {
     localStorage.setItem('user', JSON.stringify(user));
-          this.currentUser.set(user);
-          this.likeService.getLikeIds();
-          this.presenceService.createHubConnection(user);
-    }
+    this.currentUser.set(user);
+    this.likeService.getLikeIds();
+    this.presenceService.createHubConnection(user);
+  }
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
