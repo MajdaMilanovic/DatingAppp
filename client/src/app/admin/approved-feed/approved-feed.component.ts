@@ -8,18 +8,14 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
   standalone: true,
   imports: [NgIf, NgFor, AsyncPipe],
   templateUrl: './approved-feed.component.html',
-  styleUrl: './approved-feed.component.css'
+  styleUrl: './approved-feed.component.css',
 })
 export class ApprovedFeedComponent implements OnInit {
   approvedPhotos$!: Observable<any[]>;
 
   constructor(private photoFeedService: PhotoFeedService) {}
 
-
   ngOnInit(): void {
     this.approvedPhotos$ = this.photoFeedService.getApprovedPhotos();
   }
-
-  
-
 }

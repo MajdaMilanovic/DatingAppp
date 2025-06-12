@@ -9,16 +9,19 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './photo-management.component.html',
-  styleUrl: './photo-management.component.css'
+  styleUrl: './photo-management.component.css',
 })
 export class PhotoManagementComponent implements OnInit {
   photos: Photo[] = [];
-  tagFilter = '';
+  tagFilter: string = '';
 
-  constructor(private adminService:AdminService, private toastr:ToastrService) {}
-  
-  ngOnInit(): void {
-   this.getPhotosForApproval();
+  constructor(
+    private adminService: AdminService,
+    private toastr: ToastrService
+  ) {}
+
+  ngOnInit() {
+    this.getPhotosForApproval();
   }
 
   loadPhotosByTags() {
@@ -43,15 +46,13 @@ export class PhotoManagementComponent implements OnInit {
     });
   }
 
-  getPhotosForApproval() 
-  {
+  getPhotosForApproval() {
     this.adminService.getPhotosForApproval().subscribe({
-      next: photos => this.photos = photos
-    })
+      next: (photos) => (this.photos = photos),
+    });
   }
 
-  approvePhoto(photoId: number) 
-  {
+  approvePhoto(photoId: number) {
     this.adminService.approvePhoto(photoId).subscribe({
       next: () => {
         const photoToApprove = this.photos.find((p) => p.id === photoId);
@@ -66,8 +67,7 @@ export class PhotoManagementComponent implements OnInit {
     });
   }
 
-  rejectPhoto(photoId: number) 
-  {
+  rejectPhoto(photoId: number) {
     this.adminService.rejectPhoto(photoId).subscribe({
       next: () => {
         const photoToReject = this.photos.find((p) => p.id === photoId);
@@ -81,5 +81,4 @@ export class PhotoManagementComponent implements OnInit {
       },
     });
   }
-  
 }

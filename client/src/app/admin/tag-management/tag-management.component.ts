@@ -10,12 +10,20 @@ import { Tag } from '../../_models/tag';
   standalone: true,
   imports: [FormsModule, NgFor],
   templateUrl: './tag-management.component.html',
-  styleUrl: './tag-management.component.css'
+  styleUrl: './tag-management.component.css',
 })
-export class TagManagementComponent implements OnInit{
-  constructor(private adminService:AdminService, private toastr:ToastrService) {}
-  tags: Tag[]=[];
-  newTag='';
+export class TagManagementComponent implements OnInit {
+  tags: Tag[] = [];
+  newTag: string = '';
+
+  constructor(
+    private adminService: AdminService,
+    private toastr: ToastrService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadTags();
+  }
 
   loadTags() {
     this.adminService.getAllTags().subscribe({
@@ -29,16 +37,16 @@ export class TagManagementComponent implements OnInit{
 
   addTag() {
     const name = this.newTag.trim();
- 
+
     if (!name) return;
- 
+
     this.adminService.addTag({ name }).subscribe({
       next: (tag) => {
         this.tags.push(tag);
         this.newTag = '';
         this.toastr.success('Tag added');
       },
- 
+
       error: (err) => {
         console.error(err);
         this.toastr.error('Failed to add tag');
@@ -52,18 +60,11 @@ export class TagManagementComponent implements OnInit{
         this.tags = this.tags.filter((t) => t.id !== tagId);
         this.toastr.success('Tag deleted');
       },
- 
+
       error: (err) => {
         console.error(err);
         this.toastr.error('Failed to delete tag');
       },
     });
   }
-
-
-  ngOnInit(): void {
-    this.loadTags();
-  }
-
-
 }

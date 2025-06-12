@@ -9,17 +9,20 @@ import { AdminService } from '../../_services/admin.service';
   standalone: true,
   imports: [NgFor],
   templateUrl: './statistics.component.html',
-  styleUrl: './statistics.component.css'
+  styleUrl: './statistics.component.css',
 })
-export class StatisticsComponent implements OnInit{
-    photoStats: PhotoStats[] = [];
-    usersWithoutMainPhoto: UserWithoutMainPhoto[] = [];
+export class StatisticsComponent implements OnInit {
+  photoStats: PhotoStats[] = [];
+  usersWithoutMainPhoto: UserWithoutMainPhoto[] = [];
 
-    constructor(private adminService:AdminService){
-  }
+  constructor(private adminService: AdminService) {}
 
-  ngOnInit(): void {
-    this.adminService.getPhotoApprovalStats().subscribe(data => this.photoStats = data);
-    this.adminService.getUsersWithoutMainPhoto().subscribe(data => this.usersWithoutMainPhoto = data);
+  ngOnInit() {
+    this.adminService
+      .getPhotoApprovalStats()
+      .subscribe((data) => (this.photoStats = data));
+    this.adminService
+      .getUsersWithoutMainPhoto()
+      .subscribe((data) => (this.usersWithoutMainPhoto = data));
   }
 }
