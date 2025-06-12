@@ -21,8 +21,8 @@ export class UserManagementComponent implements OnInit {
   }
 
   constructor(
-    private adminService: AdminService,
-    private modalService: BsModalService
+    public adminService: AdminService,
+    public modalService: BsModalService
   ) {}
 
   openRolesModal(user: User) {

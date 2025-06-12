@@ -22,9 +22,9 @@ export class AccountService {
   });
 
   constructor(
-    private http: HttpClient,
-    private likeService: LikesService,
-    private presenceService: PresenceService
+    public http: HttpClient,
+    public likeService: LikesService,
+    public presenceService: PresenceService
   ) {}
 
   login(model: any) {

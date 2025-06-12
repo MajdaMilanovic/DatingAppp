@@ -35,8 +35,8 @@ export class AuthStoreService {
 
   constructor(
     private http: HttpClient,
-    private presenceService: PresenceService,
-    private likesService: LikesService
+    public presenceService: PresenceService,
+    public likesService: LikesService
   ) {}
 
   getUserFromStorage(): User | null {

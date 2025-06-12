@@ -17,7 +17,7 @@ export class TagManagementComponent implements OnInit {
   newTag: string = '';
 
   constructor(
-    private adminService: AdminService,
+    public adminService: AdminService,
     private toastr: ToastrService
   ) {}
 

@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 })
 export class ConfirmService {
   bsModalRef?: BsModalRef;
-  constructor(private modalService: BsModalService) {}
+  constructor(public modalService: BsModalService) {}
 
   confirm(
     title = 'Confirmation',

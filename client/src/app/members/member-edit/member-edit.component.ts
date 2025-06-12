@@ -31,8 +31,8 @@ export class MemberEditComponent implements OnInit {
   }
   member?: Member;
   constructor(
-    private accountService: AccountService,
-    private memberService: MembersService,
+    public accountService: AccountService,
+    public memberService: MembersService,
     private toastr: ToastrService
   ) {}
 

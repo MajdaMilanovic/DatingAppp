@@ -21,7 +21,7 @@ export class PhotoFilterService {
       );
     })
   );
-  constructor(private adminService: AdminService) {}
+  constructor(public adminService: AdminService) {}
   
   setPhotosForCurrentView(photos: Photo[]) {
     this.rawPhotosSubject.next(photos);

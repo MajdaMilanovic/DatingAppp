@@ -16,7 +16,7 @@ export class PhotoManagementComponent implements OnInit {
   tagFilter: string = '';
 
   constructor(
-    private adminService: AdminService,
+    public adminService: AdminService,
     private toastr: ToastrService
   ) {}
 

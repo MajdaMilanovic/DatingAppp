@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     public accountService: AccountService,
     public loadingService: LoadingService,
     public authStoreService: AuthStoreService,
-    private cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {

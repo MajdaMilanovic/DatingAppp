@@ -15,7 +15,7 @@ export class ConfirmDialogComponent {
   btnCancelText: string = '';
   result: boolean = false;
 
-  constructor(private bsModalRef: BsModalRef) {}
+  constructor(public bsModalRef: BsModalRef) {}
 
   confirm() {
     this.result = true;

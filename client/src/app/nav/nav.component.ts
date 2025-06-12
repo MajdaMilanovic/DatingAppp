@@ -31,7 +31,7 @@ export class NavComponent {
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    private authStore: AuthStoreService
+    public authStore: AuthStoreService
   ) {}
 
   login() {

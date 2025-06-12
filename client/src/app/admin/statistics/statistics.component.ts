@@ -15,7 +15,7 @@ export class StatisticsComponent implements OnInit {
   photoStats: PhotoStats[] = [];
   usersWithoutMainPhoto: UserWithoutMainPhoto[] = [];
 
-  constructor(private adminService: AdminService) {}
+  constructor(public adminService: AdminService) {}
 
   ngOnInit() {
     this.adminService

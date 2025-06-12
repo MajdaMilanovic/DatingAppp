@@ -39,11 +39,11 @@ export class MemberDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private messageService: MessageService,
-    private accountService: AccountService,
+    public accountService: AccountService,
     public presenceService: PresenceService,
     private route: ActivatedRoute,
     private router: Router,
-    private photoFilterService: PhotoFilterService
+    public photoFilterService: PhotoFilterService
   ) {}
 
   ngOnInit() {

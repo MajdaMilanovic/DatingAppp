@@ -13,7 +13,7 @@ export class LikesService {
   likeIds = signal<number[]>([]);
   paginatedResult = signal<PaginatedResult<Member[]> | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   toggleLike(targetId: number) {
     return this.http.post(`${this.baseUrl}Likes/${targetId}`, {});

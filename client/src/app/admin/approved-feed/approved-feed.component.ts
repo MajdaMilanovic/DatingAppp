@@ -13,7 +13,7 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 export class ApprovedFeedComponent implements OnInit {
   approvedPhotos$!: Observable<any[]>;
 
-  constructor(private photoFeedService: PhotoFeedService) {}
+  constructor(public photoFeedService: PhotoFeedService) {}
 
   ngOnInit(): void {
     this.approvedPhotos$ = this.photoFeedService.getApprovedPhotos();

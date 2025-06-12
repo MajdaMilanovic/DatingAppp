@@ -46,9 +46,9 @@ export class PhotoEditorComponent implements OnInit {
   filteredPhotos$ = this.photoFilterService.filteredPhotos$;
 
   constructor(
-    private accountService: AccountService,
-    private memberService: MembersService,
-    private photoFilterService: PhotoFilterService
+    public accountService: AccountService,
+    public memberService: MembersService,
+    public photoFilterService: PhotoFilterService
   ) {}
 
   ngOnInit() {

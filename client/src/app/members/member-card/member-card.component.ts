@@ -21,7 +21,7 @@ export class MemberCardComponent {
   );
 
   constructor(
-    private likeService: LikesService,
+    public likeService: LikesService,
     private presenceService: PresenceService
   ) {}
 

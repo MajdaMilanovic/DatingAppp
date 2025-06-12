@@ -18,7 +18,7 @@ export class HasRoleDirective implements OnInit {
   private viewContainerRef = inject(ViewContainerRef);
   private templateRef = inject(TemplateRef);
 
-  private authStore = inject(AuthStoreService);
+  public authStore = inject(AuthStoreService);
 
   ngOnInit() {
     this.authStore.currentUser$.pipe(take(1)).subscribe((user) => {

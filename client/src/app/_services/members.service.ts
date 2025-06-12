@@ -20,8 +20,8 @@ export class MembersService {
   userParams = signal<UserParams>(new UserParams(this.user));
 
   constructor(
-    private http: HttpClient,
-    private accountService: AccountService
+    public http: HttpClient,
+    public accountService: AccountService
   ) {}
 
   resetUserParams() {

@@ -13,7 +13,7 @@ import { UserWithoutMainPhoto } from '../_models/userWithoutMainPhoto';
 export class AdminService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   getUserWithRoles() {
     return this.http.get<User[]>(
